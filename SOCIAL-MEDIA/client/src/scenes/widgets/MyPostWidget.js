@@ -29,6 +29,7 @@ import { setPosts } from "../../state"
 const MyPostWidget = ({ picturePath }) => {
     const dispatch = useDispatch();
     const [isImage, setIsImage] = useState(false);
+    const [isClip, setIsClip] = useState(false);
     const [image, setImage] = useState(null);
     const [post, setPost] = useState("");
     const { palette } = useTheme();
@@ -47,8 +48,6 @@ const MyPostWidget = ({ picturePath }) => {
             formData.append("picture", image);
             formData.append("picturePath", image.name);
         }
-
-
 
         const response = await fetch(`http://localhost:5000/posts`, {
             method: "POST",
@@ -123,11 +122,15 @@ const MyPostWidget = ({ picturePath }) => {
                 </Box>
             )}
 
+
+
+            
+
             <Divider sx={{ margin: "1.25rem 0" }} />
 
-            <FlexBetween>                   
-                <FlexBetween gap="0.25rem" onClick={() => setIsImage(!isImage)}> 
-                {/* { isImage ippo ullathin nere opposite akkkumm} */}
+            <FlexBetween>
+                <FlexBetween gap="0.25rem" onClick={() => setIsImage(!isImage)}>
+                    {/* { isImage ippo ullathin nere opposite akkkumm} */}
                     <ImageOutlined sx={{ color: mediumMain }} />
                     <Typography
                         color={mediumMain}
@@ -144,8 +147,8 @@ const MyPostWidget = ({ picturePath }) => {
                             <Typography color={mediumMain}>Clip</Typography>
                         </FlexBetween>
 
-                        <FlexBetween gap="0.25rem">
-                            <AttachFileOutlined sx={{ color: mediumMain }} />
+                        <FlexBetween gap="0.25rem" onClick={() => setIsClip(!isClip)}>
+                            <AttachFileOutlined sx={{ color: mediumMain }}  />
                             <Typography color={mediumMain}>Attachment</Typography>
                         </FlexBetween>
 

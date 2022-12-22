@@ -5,7 +5,16 @@ import {
   FavoriteOutlined,
   ShareOutlined,
 } from "@mui/icons-material";
-import { Box, Divider, IconButton, Typography, useTheme } from "@mui/material";
+import {
+  Box,
+  Button,
+  Divider,
+  IconButton,
+  InputBase,
+  TextField,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import FlexBetween from "../../components/FlexBetween";
 import Friend from "../../components/Friend";
 import WidgetWrapper from "../../components/WidgetWrapper";
@@ -26,6 +35,7 @@ const PostWidget = ({
 }) => {
   const [isComments, setIsComments] = useState(false);
   const dispatch = useDispatch();
+  const [comment, setComment] = useState("");
   const token = useSelector((state) => state.token);
   const loggedInUserId = useSelector((state) => state.user._id);
   const isLiked = Boolean(likes[loggedInUserId]);
@@ -46,6 +56,25 @@ const PostWidget = ({
     });
     const updatedPost = await response.json();
     dispatch(setPost({ post: updatedPost }));
+  };
+
+  const patchComment = async () => {
+    
+    const response = await fetch(
+      `http://localhost:5000/posts/${postId}/comment`,
+      {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      
+        body: JSON.stringify({description : comment}),
+      }
+    );
+    const updatedComment = await response.json();
+    console.log(updatedComment,'new Comment');
+    dispatch(setPost({ post: updatedComment }));
   };
 
   return (
@@ -84,8 +113,23 @@ const PostWidget = ({
           <FlexBetween gap="0.3rem">
             <IconButton onClick={() => setIsComments(!isComments)}>
               <ChatBubbleOutlineOutlined />
+              <Typography>{comments.length}</Typography>
             </IconButton>
-            <Typography>{comments.length}</Typography>
+
+            {isComments && (
+              <FlexBetween gap="1.5rem">
+                <TextField
+                  id="outlined-name"
+                  label="Comment"
+                  onChange={(e) => setComment(e.target.value)}
+                  InputProps={{
+                    endAdornment: <Button variant="outlined" onClick={patchComment}>Post</Button>,
+                  }}
+                />
+                {/* value={name}
+                  onChange={handleChange} */}
+              </FlexBetween>
+            )}
           </FlexBetween>
         </FlexBetween>
 
