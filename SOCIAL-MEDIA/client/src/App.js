@@ -11,6 +11,7 @@ import { themeSettings } from "./theme";
 import React, { Component } from 'react';
 
 
+
 function App() {
   const mode = useSelector((state) => state.mode);
   const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
@@ -31,7 +32,8 @@ function App() {
               path="/profile/:userId"
               element={isAuth ? <ProfilePage /> : <Navigate to="/" />}
             />
-          </Routes>
+           
+          </Routes>       
         </ThemeProvider>
       </BrowserRouter>
     </div>

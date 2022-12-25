@@ -11,6 +11,9 @@ import { fileURLToPath } from 'url';
 import authRoutes from "./routes/auth.js"
 import userRoutes from "./routes/users.js"
 import postRoutes from "./routes/posts.js"
+import chatRoutes from "./routes/chat.js"
+import MessageRoute from './routes/message.js'
+
 import {register} from './controllers/auth.js'
 import { createPost } from './controllers/posts.js';
 import { verifyToken } from './middleware/auth.js';
@@ -57,6 +60,8 @@ app.post("/posts",verifyToken,upload.single("picture"),createPost)
 app.use("/auth",authRoutes)
 app.use("/users",userRoutes)
 app.use("/posts",postRoutes)
+app.use("/chat",chatRoutes)
+app.use("/message",MessageRoute)
 
 //MONGOOSE
 const PORT =process.env.PORT || 5000
