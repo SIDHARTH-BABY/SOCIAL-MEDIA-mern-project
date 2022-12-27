@@ -23,9 +23,9 @@ import {
   Close,
 } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import FlexBetween from "../../components/FlexBetween";
-import { setMode,setLogout } from "../../state";
+import { setMode, setLogout } from "../../state";
 
 const Navbar = () => {
   const [isMobileMenuToggled, setIsMobileMenuToggled] = useState(false);
@@ -86,7 +86,12 @@ const Navbar = () => {
               <LightMode sx={{ color: dark, fontSize: "25px" }} />
             )}
           </IconButton>
-          <Message sx={{ fontSize: "25px" }} />
+
+          <Message
+            sx={{ fontSize: "25px", cursor: "pointer" }}
+            onClick={() => navigate("../chat")}
+          />
+
           <Notifications sx={{ fontSize: "25px" }} />
           <Help sx={{ fontSize: "25px" }} />
           <FormControl variant="standard" value={fullName}>

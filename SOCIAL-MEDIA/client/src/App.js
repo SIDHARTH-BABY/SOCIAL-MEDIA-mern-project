@@ -9,6 +9,7 @@ import { CssBaseline, ThemeProvider } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
 import { themeSettings } from "./theme";
 import React, { Component } from 'react';
+import Chat from "./scenes/chat/Chat";
 
 
 
@@ -31,6 +32,10 @@ function App() {
             <Route
               path="/profile/:userId"
               element={isAuth ? <ProfilePage /> : <Navigate to="/" />}
+            />
+            <Route
+              path="/chat"
+              element={isAuth ? <Chat/> : <Navigate to="/" />}
             />
            
           </Routes>       
