@@ -22,7 +22,7 @@ const UserWidget = ({ userId, picturePath }) => {
   const medium = palette.neutral.medium;
   const main = palette.neutral.main;
 
-
+  
   const getUser = async () => {
     console.log(token, 'correct token');
     const response = await fetch(`http://localhost:5000/users/${userId}`, {
@@ -59,7 +59,7 @@ const UserWidget = ({ userId, picturePath }) => {
 
       <FlexBetween gap="0.5rem"
         pb="1.1rem"
-        onClick={() => navigate(`/profile/${userId}`)}
+        onClick={() => navigate(`/profile`,{state:{userId:userId}})}
       ><FlexBetween gap='1rem'>
           <UserImage image={picturePath} />
           <Box>

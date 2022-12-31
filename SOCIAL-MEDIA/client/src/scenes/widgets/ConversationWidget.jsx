@@ -2,12 +2,11 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 
-const ConversationWidget = ({ data, currentUserId }) => {
+const ConversationWidget = ({ data, currentUserId, online }) => {
   const [userData, setUserData] = useState(null);
   const token = useSelector((state) => state.token);
   useEffect(() => {
     const userId = data.members.find((id) => id !== currentUserId);
-   
 
     const getUserData = async () => {
       try {
@@ -29,7 +28,8 @@ const ConversationWidget = ({ data, currentUserId }) => {
     <>
       <div className="follower conversation">
         <div>
-          <div className="online-dot"></div>
+          {online && <div className="online-dot"></div>}
+         
           <img
             src={`http://localhost:5000/assets/${
               userData ? userData.picturePath : console.log("nothinggg")
@@ -45,13 +45,17 @@ const ConversationWidget = ({ data, currentUserId }) => {
           />
           <div className="name" style={{ fontSize: "0.8rem" }}>
             <span>
-              {userData? userData.firstName : ""} {userData?userData.lastName : ""}
+              {userData ? userData.firstName : ""}{" "}
+              {userData ? userData.lastName : ""}
             </span>
-            <span>Online</span>
+            <br />
+            <span style={{ color: online ? "#51e200" : "" }}>
+              {online ? "Online" : "Offline"}
+            </span>
           </div>
         </div>
       </div>
-      <hr style={{ width: "85%", border: "0.1px solid #ececec" }}/>
+      <hr style={{ width: "85%", border: "0.1px solid #ececec" }} />
     </>
   );
 };
