@@ -1,47 +1,42 @@
-import React from "react";
-import { useState } from "react";
-
+import {
+  Close,
+  DarkMode,
+  Help,
+  LightMode,
+  Message,
+  Notifications,
+  Search,
+} from "@mui/icons-material";
 import {
   Box,
+  FormControl,
   IconButton,
   InputBase,
-  Typography,
-  Select,
-  MenuItem,
-  FormControl,
-  useTheme,
-  useMediaQuery,
-} from "@mui/material";
-import {
-  Search,
-  Message,
-  DarkMode,
-  LightMode,
-  Notifications,
-  Help,
   Menu,
-  Close,
-} from "@mui/icons-material";
-import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
-import FlexBetween from "../../components/FlexBetween";
-import { setMode, setLogout } from "../../state";
+  MenuItem,
+  Select,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { setMode } from "../../state";
+import FlexBetween from "../FlexBetween";
 
-const Navbar = () => {
+const AdminNavbar = () => {
   const [isMobileMenuToggled, setIsMobileMenuToggled] = useState(false);
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const user = useSelector((state) => state.user);
-  const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
 
+  const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
+  const dispatch = useDispatch();
   const theme = useTheme();
+  const navigate = useNavigate();
   const neutralLight = theme.palette.neutral.light;
   const dark = theme.palette.neutral.dark;
   const background = theme.palette.background.default;
   const primaryLight = theme.palette.primary.light;
   const alt = theme.palette.background.alt;
-
-  const fullName = `${user.firstName} ${user.lastName}`;
 
   return (
     <FlexBetween padding="1rem 6%" backgroundColor={alt}>
@@ -50,7 +45,6 @@ const Navbar = () => {
           fontWeight="bold"
           fontSize="clamp(1rem, 2rem, 2.25rem)"
           color="primary"
-          onClick={() => navigate("/home")}
           sx={{
             "&:hover": {
               color: primaryLight,
@@ -58,7 +52,7 @@ const Navbar = () => {
             },
           }}
         >
-          EDNOX
+          ADMIN PANEL
         </Typography>
         {isNonMobileScreens && (
           <FlexBetween
@@ -87,16 +81,13 @@ const Navbar = () => {
             )}
           </IconButton>
 
-          <Message
-            sx={{ fontSize: "25px", cursor: "pointer" }}
-            onClick={() => navigate("../chat")}
-          />
+          <Message sx={{ fontSize: "25px", cursor: "pointer" }} />
 
           <Notifications sx={{ fontSize: "25px" }} />
           <Help sx={{ fontSize: "25px" }} />
-          <FormControl variant="standard" value={fullName}>
+          <FormControl variant="standard" value="ADMIN">
             <Select
-              value={fullName}
+              value="ADMIN"
               sx={{
                 backgroundColor: neutralLight,
                 width: "150px",
@@ -112,10 +103,17 @@ const Navbar = () => {
               }}
               input={<InputBase />}
             >
-              <MenuItem value={fullName}>
-                <Typography>{fullName}</Typography>
+              <MenuItem value="ADMIN">
+                <Typography>ADMIN</Typography>
               </MenuItem>
-              <MenuItem onClick={() => dispatch(setLogout())}>Log Out</MenuItem>
+              <MenuItem
+                onClick={() => {
+                  localStorage.clear();
+                  navigate("/admin");
+                }}
+              >
+                Log Out
+              </MenuItem>
             </Select>
           </FormControl>
         </FlexBetween>
@@ -169,12 +167,12 @@ const Navbar = () => {
                 <LightMode sx={{ color: dark, fontSize: "25px" }} />
               )}
             </IconButton>
-            <Message onClick={() => navigate("../chat")} sx={{ fontSize: "25px" }} />
+            <Message sx={{ fontSize: "25px" }} />
             <Notifications sx={{ fontSize: "25px" }} />
             <Help sx={{ fontSize: "25px" }} />
-            <FormControl variant="standard" value={fullName}>
+            <FormControl variant="standard" value="ADMIN">
               <Select
-                value={fullName}
+                value="ADMIN"
                 sx={{
                   backgroundColor: neutralLight,
                   width: "150px",
@@ -190,10 +188,15 @@ const Navbar = () => {
                 }}
                 input={<InputBase />}
               >
-                <MenuItem value={fullName}>
-                  <Typography>{fullName}</Typography>
+                <MenuItem>
+                  <Typography>ADMIN</Typography>
                 </MenuItem>
-                <MenuItem onClick={() => dispatch(setLogout())}>
+                <MenuItem
+                  onClick={() => {
+                    localStorage.clear();
+                    navigate("/admin");
+                  }}
+                >
                   Log Out
                 </MenuItem>
               </Select>
@@ -205,4 +208,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default AdminNavbar;

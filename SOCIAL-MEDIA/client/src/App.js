@@ -10,6 +10,9 @@ import { createTheme } from "@mui/material/styles";
 import { themeSettings } from "./theme";
 import React, { Component } from 'react';
 import Chat from "./scenes/chat/Chat";
+import AdminLogin from "./scenes/adminLogin/AdminLogin";
+import AdminHome from "./scenes/adminHome/AdminHome";
+import ProtectedRoute from "./components/Admin/AdminProtectedRoute";
 
 
 
@@ -35,10 +38,18 @@ function App() {
             />
             <Route
               path="/chat"
-              element={isAuth ? <Chat/> : <Navigate to="/" />}
+              element={isAuth ? <Chat /> : <Navigate to="/" />}
             />
-           
-          </Routes>       
+            <Route
+              path="/admin"
+              element={<AdminLogin />}
+            />
+            <Route
+              path="/admin-home"
+              element={<ProtectedRoute><AdminHome /></ProtectedRoute>}
+            />
+
+          </Routes>
         </ThemeProvider>
       </BrowserRouter>
     </div>

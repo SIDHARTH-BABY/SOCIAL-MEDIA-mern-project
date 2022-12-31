@@ -153,7 +153,7 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receivedMessage  }) => {
                         {userData ? userData.lastName : ""}
                       </span>
                       <br/>
-                      <span>Online</span>
+                    
                     </div>
                   </div>
                 </div>
