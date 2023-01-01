@@ -1,5 +1,5 @@
 import User from "../models/User.js";
-
+import jwt from "jsonwebtoken"
 //READ
 
 export const getUser = async (req, res) => {
@@ -69,3 +69,36 @@ export const addRemoveFriend = async (req, res) => {
         res.status(404).json({ message: err.message });
     }
 }
+
+
+
+export const updateUser = async (req, res) => {
+    const id = req.params.id;
+    // console.log("Data Received", req.body)
+    const { _id,
+        firstName,
+        lastName,
+        location,
+        occupation } = req.body;
+
+    if (id === _id) {
+        try {
+
+            const user = await User.findByIdAndUpdate(id, req.body, {
+                new: true,
+            });
+            const token = jwt.sign({ id: user._id }, process.env.JWt_SECRET)
+
+
+            console.log({ user })
+            res.status(200).json({ user, token, success: true, });
+        } catch (error) {
+            console.log(error, "Error ")
+            res.status(400).json(error, 'hello');
+        }
+    } else {
+        res
+            .status(403)
+            .json("Access Denied! You can update only your own Account.");
+    }
+};

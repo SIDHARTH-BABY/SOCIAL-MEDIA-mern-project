@@ -72,3 +72,13 @@ export const getFullUsers = async (req, res) => {
     res.status(500).json({ error: error.message, message: "error while fetching users", success: false })
  }  
 }
+
+// export const getFullUsers = async (req, res, next) => {
+//     try {
+//       const users = await User.find().lean()
+  
+//       res.status(200).json({ users })
+//     } catch (error) {
+//       console.log(error)
+//     }
+//   }

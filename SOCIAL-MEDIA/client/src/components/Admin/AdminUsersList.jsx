@@ -3,22 +3,59 @@ import React from "react";
 import { Table, Divider, Tag } from "antd";
 import axios from "axios";
 import { useEffect } from "react";
+import { useState } from "react";
 
 const AdminUsersList = () => {
-  const { Column, ColumnGroup } = Table;
+  const [user, setUser] = useState([])
 
-  const usersList = async () => {
-    try {
-      const response = await axios.get("http://localhost:5000/admin/get-users");
-      if (response.data.success) {
-        console.log(response.data.formattedFriends);
+  const { Column } = Table;
+
+  // const usersList = async () => {
+  //   try {
+  //     const response = await axios.get("http://localhost:5000/admin/get-users");
+
+  //     if (response.data.success) {
+  //       setAllUsers(response.data.formattedFriends);
+  //       console.log(allUsers, "kittuo");
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
+  useEffect(() => {
+    async function usersList () {
+      try {
+        const userData = await axios.get(
+          "http://localhost:5000/admin/get-users"
+        );
+
+        if (userData.data.success) {
+          setUser(userData.data.formattedFriends);
+          console.log(user, "kittuo");
+        }
+      } catch (error) {
+        console.log(error);
       }
-    } catch (error) {}
-  };
+    };
+    usersList();
+  }, []);
 
-  useEffect(()=>{
-    usersList()
-  },[])
+ 
+   
+  
+    // useEffect(() => {
+    //   async function getUsers () {
+    //     const userData = await axios.get("http://localhost:5000/admin/get-users")
+    //     if (userData.status === 200) {
+    //       setUser(userData.data.users)
+        
+    //     } else {
+    //       alert('error occured')
+    //     }
+    //   }
+    //   getUsers()
+    // }, [])
 
   const data = [
     {

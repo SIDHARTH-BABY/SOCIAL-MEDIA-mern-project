@@ -30,6 +30,12 @@
 ::-webkit-scrollbar {
   display: none;
 }
+.ant-select-selection__placeholder{
+  color : blue;
+}
+.ant-select-selection-placeholder {
+  color: #c81414;
+}
 
 
 @keyframes App-logo-spin {

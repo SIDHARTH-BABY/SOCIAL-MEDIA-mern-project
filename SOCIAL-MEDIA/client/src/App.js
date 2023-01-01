@@ -13,6 +13,7 @@ import Chat from "./scenes/chat/Chat";
 import AdminLogin from "./scenes/adminLogin/AdminLogin";
 import AdminHome from "./scenes/adminHome/AdminHome";
 import ProtectedRoute from "./components/Admin/AdminProtectedRoute";
+import EditProfileform from "./scenes/editUserProfile/EditProfileform";
 
 
 
@@ -35,6 +36,10 @@ function App() {
             <Route
               path="/profile"
               element={isAuth ? <ProfilePage /> : <Navigate to="/" />}
+            />
+            <Route
+              path="/edit-profile"
+              element={isAuth ? <EditProfileform /> : <Navigate to="/" />}
             />
             <Route
               path="/chat"

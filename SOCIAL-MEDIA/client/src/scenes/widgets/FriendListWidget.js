@@ -21,7 +21,7 @@ const FriendListWidget = ({ userId }) => {
             }
         );
         const data = await response.json();
-        console.log(data, 'friendList widget now');
+     
         dispatch(setFriends({ friends: data }));
     };
 

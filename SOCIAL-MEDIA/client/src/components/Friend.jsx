@@ -20,7 +20,7 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
   const main = palette.neutral.main;
   const medium = palette.neutral.medium;
 
-  console.log(friends,'hello');
+ 
   const isFriend =Array.isArray(friends) ?  friends.find((friend) => friend._id === friendId) : 0;
 
   const patchFriend = async () => {

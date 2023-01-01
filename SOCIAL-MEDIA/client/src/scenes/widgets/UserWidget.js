@@ -5,32 +5,96 @@ import {
   LocationOnOutlined,
   WorkOutlineOutlined,
 } from "@mui/icons-material";
-import { Box, Typography, Divider, useTheme } from "@mui/material";
+import { Box, Typography, Divider, useTheme, ButtonBase } from "@mui/material";
 import UserImage from "../../components/UserImage";
 import FlexBetween from "../../components/FlexBetween";
 import WidgetWrapper from "../../components/WidgetWrapper";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import CreateIcon from '@mui/icons-material/Create';
+import Modal from '@mui/material/Modal';
+import { Button, Form, Input } from "antd";
+import axios from "axios";
+import { setLogin } from '../../state';
 
 const UserWidget = ({ userId, picturePath }) => {
+
   const [user, setUser] = useState(null);
+  const [isCurrUser, setIsCurrUser] = useState(false);
   const { palette } = useTheme();
   const navigate = useNavigate();
   const token = useSelector((state) => state.token);
+  const currUserId = useSelector((state) => state.user);
   const dark = palette.neutral.dark;
   const medium = palette.neutral.medium;
   const main = palette.neutral.main;
+  const dispatch = useDispatch();
 
-  
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  useEffect(() => {
+    if (userId === currUserId._id) {
+      console.log(currUserId);
+      setIsCurrUser(true)
+
+    } else {
+      setIsCurrUser(false)
+
+    }
+  }, [isCurrUser])
+
+  const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+  };
+
+  const onFinish = async (values) => {
+    try {
+      console.log('working');
+
+      const response = await axios.put(`http://localhost:5000/users/edit-user/${currUserId._id}`, values)
+
+      if (response.data.success) {
+        console.log(response.data.user, 'nokkate');
+        dispatch(
+          setLogin({
+            user: response.data.user,
+            token: response.data.token,
+          }),
+
+          handleClose()
+
+        );
+
+
+      } else {
+        console.log('vannilaa');
+
+      }
+    } catch (error) {
+      console.log(error);
+    }
+
+  }
+
+
   const getUser = async () => {
-    console.log(token, 'correct token');
+
     const response = await fetch(`http://localhost:5000/users/${userId}`, {
       method: "GET",
       headers: { Authorization: `Bearer ${token}` },
     })
     const data = await response.json();
-    console.log(data, 'doneeee');
+
     setUser(data);
   }
 
@@ -59,7 +123,7 @@ const UserWidget = ({ userId, picturePath }) => {
 
       <FlexBetween gap="0.5rem"
         pb="1.1rem"
-        onClick={() => navigate(`/profile`,{state:{userId:userId}})}
+        onClick={() => navigate(`/profile`, { state: { userId: userId } })}
       ><FlexBetween gap='1rem'>
           <UserImage image={picturePath} />
           <Box>
@@ -90,6 +154,12 @@ const UserWidget = ({ userId, picturePath }) => {
           <WorkOutlineOutlined fontSize="large" sx={{ color: main }} />
           <Typography color={medium}>{occupation}</Typography>
         </Box>
+
+        {isCurrUser ?
+          <Box display="flex" alignItems="center" gap="1rem">
+            <CreateIcon fontSize="large" sx={{ color: main }} />
+            <ButtonBase onClick={handleOpen} > <Typography color={medium}>Edit Profile</Typography></ButtonBase>
+          </Box> : null}
       </Box>
 
       <Divider />
@@ -144,8 +214,58 @@ const UserWidget = ({ userId, picturePath }) => {
         </FlexBetween>
       </Box>
 
+      {/* Edit Your Profileeeee */}
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Edit Profile
+          </Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+
+            <Form layout="vertical" onFinish={onFinish}>
+
+              <Form.Item label="First Name" name="firstName" >
+                <Input placeholder={currUserId.firstName} />
+              </Form.Item>
+
+              <Form.Item label="Last Name" name="lastName">
+                <Input placeholder={currUserId.lastName} />
+              </Form.Item>
+
+              <Form.Item label="Location" name="location">
+                <Input placeholder={currUserId.location} />
+              </Form.Item>
+
+              <Form.Item label="Occupation" name="occupation">
+                <Input placeholder={currUserId.occupation} />
+              </Form.Item>
+
+              <Form.Item label="Occupation" name="_id" hidden={true} initialValue={currUserId._id}>
+                <Input />
+
+              </Form.Item>
+
+              <div className="d-flex flex-column">
+                <Button
+
+                  htmlType="submit"
+                >
+                  Submit
+                </Button>
+              </div>
+            </Form>
+          </Typography>
+        </Box>
+      </Modal>
     </WidgetWrapper>
   )
 };
+
+
 
 export default UserWidget
