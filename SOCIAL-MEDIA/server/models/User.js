@@ -48,6 +48,10 @@ const UserSchema = new mongoose.Schema({
         type: Array,
         default: []
     },
+    Active: {
+        type: Boolean,
+        default: true
+      },
     location: String,
     occupation: String,
     viewProfile:Number,

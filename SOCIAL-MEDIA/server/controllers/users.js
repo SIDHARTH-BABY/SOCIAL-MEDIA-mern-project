@@ -102,3 +102,6 @@ export const updateUser = async (req, res) => {
             .json("Access Denied! You can update only your own Account.");
     }
 };
+
+
+

@@ -1,102 +1,106 @@
 import React from "react";
 
-import { Table, Divider, Tag } from "antd";
+import { Table, Divider, Tag, Button } from "antd";
 import axios from "axios";
 import { useEffect } from "react";
 import { useState } from "react";
 
 const AdminUsersList = () => {
-  const [user, setUser] = useState([])
+  const [user, setUser] = useState([]);
 
   const { Column } = Table;
 
-  // const usersList = async () => {
-  //   try {
-  //     const response = await axios.get("http://localhost:5000/admin/get-users");
 
-  //     if (response.data.success) {
-  //       setAllUsers(response.data.formattedFriends);
-  //       console.log(allUsers, "kittuo");
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+
+  const blockUser = async (userID) => {
+    try {
+      
+      const response = await axios.post(
+        "http://localhost:5000/admin/block-user",
+        { userID }
+      );
+
+      if (response.data.success) {
+        console.log("Blocked");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const unBlockUser = async (userID) => {
+    try {
+     
+      const response = await axios.post(
+        "http://localhost:5000/admin/unblock-user",
+        { userID }
+      );
+
+      if (response.data.success) {
+        console.log("unBlocked");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
-    async function usersList () {
+    async function usersList() {
       try {
         const userData = await axios.get(
           "http://localhost:5000/admin/get-users"
         );
 
         if (userData.data.success) {
+          console.log(userData.data.formattedFriends, "first line admin");
           setUser(userData.data.formattedFriends);
-          console.log(user, "kittuo");
         }
       } catch (error) {
         console.log(error);
       }
-    };
+    }
     usersList();
   }, []);
 
- 
-   
-  
-    // useEffect(() => {
-    //   async function getUsers () {
-    //     const userData = await axios.get("http://localhost:5000/admin/get-users")
-    //     if (userData.status === 200) {
-    //       setUser(userData.data.users)
-        
-    //     } else {
-    //       alert('error occured')
-    //     }
-    //   }
-    //   getUsers()
-    // }, [])
-
-  const data = [
-    {
-      key: "1",
-      firstName: "John",
-
-      age: 32,
-      address: "New York No. 1 Lake Park",
-    },
-    {
-      key: "2",
-      firstName: "Jim",
-
-      age: 42,
-      address: "London No. 1 Lake Park",
-    },
-    {
-      key: "3",
-      firstName: "Joe",
-
-      age: 32,
-      address: "Sidney No. 1 Lake Park",
-      tags: ["cool", "teacher"],
-    },
-  ];
   return (
     <div>
-      <Table dataSource={data}>
+      <Table dataSource={user ? user : ""}>
         <Column title="Name" dataIndex="firstName" key="firstName" />
+        <Column title="Email" dataIndex="location" key="location" />
+        <Column title="Email" dataIndex="email" key="age" />
 
-        <Column title="Email" dataIndex="age" key="age" />
-        <Column title="Address" dataIndex="address" key="address" />
+        {user
+          ? user.map((location) => {
+              console.log(location);
+            })
+          : ""}
 
         <Column
           title="Action"
           key="action"
-          render={(text, record) => (
+          render={(record) => (
             <span>
-              <a>Invite {record.lastName}</a>
+              <Button
+                type={record.Active ? "" : "primary"}
+                onClick={() => {
+                  if (window.confirm("Do you want to block this user?"))
+                    blockUser(record._id);
+                }}
+              >
+                Block
+              </Button>
+
               <Divider type="vertical" />
-              <a>Delete</a>
+
+              <Button
+                type={record.Active ? "primary" : ""}
+                onClick={() => {
+                  if (window.confirm("Do you want to unblock this user?"))
+                    unBlockUser(record._id);
+                }}
+              >
+                UnBlock
+              </Button>
             </span>
           )}
         />

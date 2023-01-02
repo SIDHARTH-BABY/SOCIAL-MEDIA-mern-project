@@ -16,12 +16,12 @@ const AdminLoginForm = () => {
         localStorage.setItem("admin-token", data.data.token);
         navigate("/admin-home");
       } else {
-        // toast.error(response.data.message);
+      
         console.log(data,'erorrr');
       }
     } catch (error) {
       console.log(error);
-      // toast.error("something went wrong");
+    
     }
   };
 
