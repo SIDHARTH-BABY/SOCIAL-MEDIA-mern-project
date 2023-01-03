@@ -63,6 +63,10 @@ app.post("/admin/login",adminLogin)
 app.get("/admin/get-users",getFullUsers)
 app.post("/admin/block-user",blockUser)
 app.post("/admin/unblock-user",unBlockUser)
+
+
+
+
 //ROUTES
 app.use("/auth",authRoutes)
 app.use("/users",userRoutes)

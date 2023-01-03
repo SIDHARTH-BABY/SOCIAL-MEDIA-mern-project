@@ -17,17 +17,14 @@ const AdminSidebar = () => {
 
   const adminMenu = [
     {
-      name: "Home",
+      name: "User Manage",
       link: "/admin-home",
     },
     {
-      name: "Users List",
-      link: "/admin/eventList",
+      name: "Post Manage",
+      link: "/admin-post-report",
     },
-    {
-      name: "User Manage",
-      link: "/admin/slots",
-    },
+  
   ];
   return (
     <WidgetWrapper>

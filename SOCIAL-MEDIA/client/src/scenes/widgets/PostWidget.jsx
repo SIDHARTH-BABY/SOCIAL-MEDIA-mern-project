@@ -5,12 +5,15 @@ import {
   FavoriteOutlined,
   ShareOutlined,
 } from "@mui/icons-material";
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 import {
   Box,
   Button,
   Divider,
   IconButton,
   InputBase,
+  Menu,
+  MenuItem,
   TextField,
   Typography,
   useTheme,
@@ -21,7 +24,8 @@ import WidgetWrapper from "../../components/WidgetWrapper";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPost } from "../../state";
-
+import PostDelete from "../postDelete/PostDelete";
+const ITEM_HEIGHT = 48;
 const PostWidget = ({
   postId,
   postUserId,
@@ -59,7 +63,6 @@ const PostWidget = ({
   };
 
   const patchComment = async () => {
-    
     const response = await fetch(
       `http://localhost:5000/posts/${postId}/comment`,
       {
@@ -68,14 +71,16 @@ const PostWidget = ({
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
-      
-        body: JSON.stringify({description : comment}),
+
+        body: JSON.stringify({ description: comment }),
       }
     );
     const updatedComment = await response.json();
-    console.log(updatedComment,'new Comment');
+    console.log(updatedComment, "new Comment");
     dispatch(setPost({ post: updatedComment }));
   };
+
+
 
   return (
     <WidgetWrapper m="2rem 0">
@@ -123,7 +128,11 @@ const PostWidget = ({
                   label="Comment"
                   onChange={(e) => setComment(e.target.value)}
                   InputProps={{
-                    endAdornment: <Button variant="outlined" onClick={patchComment}>Post</Button>,
+                    endAdornment: (
+                      <Button variant="outlined" onClick={patchComment}>
+                        Post
+                      </Button>
+                    ),
                   }}
                 />
                 {/* value={name}
@@ -134,7 +143,10 @@ const PostWidget = ({
         </FlexBetween>
 
         <IconButton>
-          <ShareOutlined />
+        
+
+          <PostDelete postUserId={postUserId}   postId={postId}/>
+
         </IconButton>
       </FlexBetween>
       {isComments && (
@@ -150,6 +162,8 @@ const PostWidget = ({
           <Divider />
         </Box>
       )}
+
+     
     </WidgetWrapper>
   );
 };

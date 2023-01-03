@@ -30,7 +30,7 @@ const AdminUsersList = () => {
 
   const unBlockUser = async (userID) => {
     try {
-     
+      
       const response = await axios.post(
         "http://localhost:5000/admin/unblock-user",
         { userID }
@@ -69,11 +69,7 @@ const AdminUsersList = () => {
         <Column title="Email" dataIndex="location" key="location" />
         <Column title="Email" dataIndex="email" key="age" />
 
-        {user
-          ? user.map((location) => {
-              console.log(location);
-            })
-          : ""}
+       
 
         <Column
           title="Action"

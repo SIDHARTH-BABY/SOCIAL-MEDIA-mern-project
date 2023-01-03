@@ -14,6 +14,7 @@ import AdminLogin from "./scenes/adminLogin/AdminLogin";
 import AdminHome from "./scenes/adminHome/AdminHome";
 import ProtectedRoute from "./components/Admin/AdminProtectedRoute";
 import EditProfileform from "./scenes/editUserProfile/EditProfileform";
+import AdminPostReport from "./scenes/adminReport/AdminPostReport";
 
 
 
@@ -52,6 +53,10 @@ function App() {
             <Route
               path="/admin-home"
               element={<ProtectedRoute><AdminHome /></ProtectedRoute>}
+            />
+            <Route
+              path="/admin-post-report"
+              element={<ProtectedRoute><AdminPostReport /></ProtectedRoute>}
             />
 
           </Routes>
