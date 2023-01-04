@@ -15,6 +15,7 @@ import AdminHome from "./scenes/adminHome/AdminHome";
 import ProtectedRoute from "./components/Admin/AdminProtectedRoute";
 import EditProfileform from "./scenes/editUserProfile/EditProfileform";
 import AdminPostReport from "./scenes/adminReport/AdminPostReport";
+import OtpFormm from "./scenes/loginPage/OtpFormm";
 
 
 
@@ -30,6 +31,8 @@ function App() {
           <CssBaseline />
           <Routes>
             <Route path="/" element={<LoginPage />} />
+            <Route path="/otp-page" element={<OtpFormm />} />
+
             <Route
               path="/home"
               element={isAuth ? <HomePage /> : <Navigate to="/" />}
@@ -58,6 +61,7 @@ function App() {
               path="/admin-post-report"
               element={<ProtectedRoute><AdminPostReport /></ProtectedRoute>}
             />
+            
 
           </Routes>
         </ThemeProvider>

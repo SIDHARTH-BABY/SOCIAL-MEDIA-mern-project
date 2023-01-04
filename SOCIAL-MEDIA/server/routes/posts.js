@@ -1,5 +1,5 @@
 import express from 'express';
-import { commentPost, deletePost, getFeedPosts, getPostForDelete, getUserPosts, likePost, reportPost } from "../controllers/posts.js";
+import { commentPost, deletePost, getFeedPosts, getPostForDelete, getReportedPosts, getUserPosts, likePost, reportPost } from "../controllers/posts.js";
 import { verifyToken } from "../middleware/auth.js";
 
 const router = express.Router();
@@ -8,6 +8,7 @@ const router = express.Router();
 router.get("/", getFeedPosts);
 router.get("/:userId/posts", verifyToken, getUserPosts);
 router.get("/postId-for-delete", getPostForDelete);
+router.get("/reported-posts", getReportedPosts);
 
 
 /* UPDATE */

@@ -15,7 +15,7 @@ import chatRoutes from "./routes/chat.js"
 import MessageRoute from './routes/message.js'
 // import AdminRoute from './routes/admin.js'
 
-import {register} from './controllers/auth.js'
+import {register, sendOtp} from './controllers/auth.js'
 import { createPost } from './controllers/posts.js';
 import { verifyToken } from './middleware/auth.js';
 import User from "./models/User.js"
@@ -58,6 +58,7 @@ const upload = multer({storage})
 //ROUTES WITH FILES
 app.post("/auth/register",upload.single("picture"), register)
 app.post("/posts",verifyToken,upload.single("picture"),createPost)
+app.post("/send-otp",upload.single("picture"),sendOtp)
 app.post("/admin/register",adminRegister)
 app.post("/admin/login",adminLogin)
 app.get("/admin/get-users",getFullUsers)

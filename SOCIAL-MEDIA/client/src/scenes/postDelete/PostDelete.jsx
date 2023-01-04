@@ -1,5 +1,5 @@
 import { IconButton, Menu, MenuItem } from "@mui/material";
-import React from "react";
+import React, { useCallback } from "react";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { Button } from "antd";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,9 +7,14 @@ import { useEffect } from "react";
 import axios from "axios";
 import { useState } from "react";
 import { setPost, setPosts } from "../../state";
+
+import { useReducer } from "react";
 const ITEM_HEIGHT = 48;
 
-const PostDelete = ({ postUserId, postId }) => {
+const PostDelete = ({ setLoading,postUserId, postId }) => {
+  
+
+  
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -32,8 +37,11 @@ const PostDelete = ({ postUserId, postId }) => {
       let updatedPosts =  response.data.newposts
       console.log(updatedPosts,'ithannu new posts');
       dispatch(setPost({ post: updatedPosts }));
+      setLoading(false);
+  
     }
   };
+ 
 
   const reportPost = async (postId) => {
     console.log(postId,'noww post Id ');
@@ -80,6 +88,7 @@ const PostDelete = ({ postUserId, postId }) => {
             <Button
               onClick={() => {
                 deletePost(postId);
+               
               }}
             >
               Delete
@@ -91,6 +100,7 @@ const PostDelete = ({ postUserId, postId }) => {
           </MenuItem>
         )}
       </Menu>
+     
     </div>
   );
 };

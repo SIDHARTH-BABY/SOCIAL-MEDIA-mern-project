@@ -30,6 +30,7 @@
 ::-webkit-scrollbar {
   display: none;
 }
+
 .ant-select-selection__placeholder{
   color : blue;
 }

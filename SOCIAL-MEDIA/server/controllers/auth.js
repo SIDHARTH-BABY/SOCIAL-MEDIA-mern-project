@@ -1,8 +1,49 @@
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
+
 import User from "../models/User.js"
+import { otpSend } from "../Services/nodeMailer.js";
 
 
+
+
+export const sendOtp = async (req, res) => {
+    try {
+        const { firstName,
+            lastName,
+            email,
+            password,
+            picturePath,
+            friends,
+            location,
+            occupation, } = req.body;
+
+
+console.log(req.body,'fisrt emailllll');
+        const emailExist = await User.findOne({ email: email });
+
+        if (emailExist) {
+            res.status(200).send({
+                message: "Email already exist",
+                success: false
+            });
+        } else {
+            otpSend(email)
+                .then((response) => {
+                    console.log(response, 'kkkkkkkkkkkkkkkkkkkk');
+                    res.status(200).send({
+                        message: "OTP sent",
+                        response: response,
+                        success: true
+                    });
+                })
+                .catch((err) => console.log("ERROR", err));
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(500).send({ success: false });
+    }
+};
 
 //REGISTER USER
 
@@ -64,8 +105,8 @@ export const login = async (req, res) => {
             delete user.password;
             res.status(200).json({ token, user })
 
-        }else{
-            res.status(401).json({ status: 'user have been blocked' }) 
+        } else {
+            res.status(401).json({ status: 'user have been blocked' })
         }
 
 

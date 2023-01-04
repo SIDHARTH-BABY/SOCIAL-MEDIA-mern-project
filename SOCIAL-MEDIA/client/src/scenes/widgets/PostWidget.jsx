@@ -5,7 +5,7 @@ import {
   FavoriteOutlined,
   ShareOutlined,
 } from "@mui/icons-material";
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 import {
   Box,
   Button,
@@ -41,6 +41,7 @@ const PostWidget = ({
   const dispatch = useDispatch();
   const [comment, setComment] = useState("");
   const token = useSelector((state) => state.token);
+
   const loggedInUserId = useSelector((state) => state.user._id);
   const isLiked = Boolean(likes[loggedInUserId]);
   const likeCount = Object.keys(likes).length;
@@ -48,6 +49,8 @@ const PostWidget = ({
   const { palette } = useTheme();
   const main = palette.neutral.main;
   const primary = palette.primary.main;
+
+  const [loading, setLoading] = useState(true);
 
   const patchLike = async () => {
     const response = await fetch(`http://localhost:5000/posts/${postId}/like`, {
@@ -80,91 +83,95 @@ const PostWidget = ({
     dispatch(setPost({ post: updatedComment }));
   };
 
-
-
   return (
-    <WidgetWrapper m="2rem 0">
-      <Friend
-        friendId={postUserId}
-        name={name}
-        subtitle={location}
-        userPicturePath={userPicturePath}
-      />
-      <Typography color={main} sx={{ mt: "1rem" }}>
-        {description}
-      </Typography>
-      {picturePath && (
-        <img
-          width="100%"
-          height="auto"
-          alt="post"
-          style={{ borderRadius: "0.75rem", marginTop: "0.75rem" }}
-          src={`http://localhost:5000/assets/${picturePath}`}
-        />
-      )}
-      <FlexBetween mt="0.25rem">
-        <FlexBetween gap="1rem">
-          <FlexBetween gap="0.3rem">
-            <IconButton onClick={patchLike}>
-              {isLiked ? (
-                <FavoriteOutlined sx={{ color: primary }} />
-              ) : (
-                <FavoriteBorderOutlined />
-              )}
-            </IconButton>
-            <Typography>{likeCount}</Typography>
-          </FlexBetween>
+    <box>
+      {loading ? (
+        <WidgetWrapper m="2rem 0">
+          <Friend
+            friendId={postUserId}
+            name={name}
+            subtitle={location}
+            userPicturePath={userPicturePath}
+          />
 
-          <FlexBetween gap="0.3rem">
-            <IconButton onClick={() => setIsComments(!isComments)}>
-              <ChatBubbleOutlineOutlined />
-              <Typography>{comments.length}</Typography>
-            </IconButton>
-
-            {isComments && (
-              <FlexBetween gap="1.5rem">
-                <TextField
-                  id="outlined-name"
-                  label="Comment"
-                  onChange={(e) => setComment(e.target.value)}
-                  InputProps={{
-                    endAdornment: (
-                      <Button variant="outlined" onClick={patchComment}>
-                        Post
-                      </Button>
-                    ),
-                  }}
-                />
-                {/* value={name}
-                  onChange={handleChange} */}
+          <Typography color={main} sx={{ mt: "1rem" }}>
+            {description}
+          </Typography>
+          {picturePath && (
+            <img
+              width="100%"
+              height="auto"
+              alt="post"
+              style={{ borderRadius: "0.75rem", marginTop: "0.75rem" }}
+              src={`http://localhost:5000/assets/${picturePath}`}
+            />
+          )}
+          <FlexBetween mt="0.25rem">
+            <FlexBetween gap="1rem">
+              <FlexBetween gap="0.3rem">
+                <IconButton onClick={patchLike}>
+                  {isLiked ? (
+                    <FavoriteOutlined sx={{ color: primary }} />
+                  ) : (
+                    <FavoriteBorderOutlined />
+                  )}
+                </IconButton>
+                <Typography>{likeCount}</Typography>
               </FlexBetween>
-            )}
+
+              <FlexBetween gap="0.3rem">
+                <IconButton onClick={() => setIsComments(!isComments)}>
+                  <ChatBubbleOutlineOutlined />
+                  <Typography>{comments.length}</Typography>
+                </IconButton>
+
+                {isComments && (
+                  <FlexBetween gap="1.5rem">
+                    <TextField
+                      id="outlined-name"
+                      label="Comment"
+                      onChange={(e) => setComment(e.target.value)}
+                      InputProps={{
+                        endAdornment: (
+                          <Button variant="outlined" onClick={patchComment}>
+                            Post
+                          </Button>
+                        ),
+                      }}
+                    />
+                    {/* value={name}
+                  onChange={handleChange} */}
+                  </FlexBetween>
+                )}
+              </FlexBetween>
+            </FlexBetween>
+
+            <IconButton>
+              <PostDelete
+                setLoading={setLoading}
+                postUserId={postUserId}
+                postId={postId}
+              />
+            </IconButton>
           </FlexBetween>
-        </FlexBetween>
-
-        <IconButton>
-        
-
-          <PostDelete postUserId={postUserId}   postId={postId}/>
-
-        </IconButton>
-      </FlexBetween>
-      {isComments && (
-        <Box mt="0.5rem">
-          {comments.map((comment, i) => (
-            <Box key={`${name}-${i}`}>
+          {isComments && (
+            <Box mt="0.5rem">
+              {comments.map((comment, i) => (
+                <Box key={`${name}-${i}`}>
+                  <Divider />
+                  <Typography sx={{ color: main, m: "0.5rem 0", pl: "1rem" }}>
+                    {comment}
+                  </Typography>
+                </Box>
+              ))}
               <Divider />
-              <Typography sx={{ color: main, m: "0.5rem 0", pl: "1rem" }}>
-                {comment}
-              </Typography>
             </Box>
-          ))}
-          <Divider />
-        </Box>
+          )}
+        </WidgetWrapper>
+      ) : (
+        ""
       )}
-
-     
-    </WidgetWrapper>
+    </box>
   );
 };
 

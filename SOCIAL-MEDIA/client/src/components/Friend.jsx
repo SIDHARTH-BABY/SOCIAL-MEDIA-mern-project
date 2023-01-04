@@ -11,7 +11,9 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { _id } = useSelector((state) => state.user);
+
   const token = useSelector((state) => state.token);
+
   const friends = useSelector((state) => state.user.friends);
 
   const { palette } = useTheme();
@@ -20,8 +22,9 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
   const main = palette.neutral.main;
   const medium = palette.neutral.medium;
 
- 
-  const isFriend =Array.isArray(friends) ?  friends.find((friend) => friend._id === friendId) : 0;
+  const isFriend = Array.isArray(friends)
+    ? friends.find((friend) => friend._id === friendId)
+    : 0;
 
   const patchFriend = async () => {
     const response = await fetch(
@@ -44,7 +47,7 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
         <Box
           onClick={() => {
             // navigate(`/profile/${friendId}`);
-            navigate(`/profile`,{state:{userId:friendId}});
+            navigate(`/profile`, { state: { userId: friendId } });
             navigate(0);
           }}
         >
@@ -66,16 +69,18 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
           </Typography>
         </Box>
       </FlexBetween>
-      <IconButton
-        onClick={() => patchFriend()}
-        sx={{ backgroundColor: primaryLight, p: "0.6rem" }}
-      >
-        {isFriend ? (
-          <PersonRemoveOutlined sx={{ color: primaryDark }} />
-        ) : (
-          <PersonAddOutlined sx={{ color: primaryDark }} />
-        )}
-      </IconButton>
+      {_id !== friendId ? (
+        <IconButton
+          onClick={() => patchFriend()}
+          sx={{ backgroundColor: primaryLight, p: "0.6rem" }}
+        >
+          {isFriend ? (
+            <PersonRemoveOutlined sx={{ color: primaryDark }} />
+          ) : (
+            <PersonAddOutlined sx={{ color: primaryDark }} />
+          )}
+        </IconButton>
+      ) : null}
     </FlexBetween>
   );
 };

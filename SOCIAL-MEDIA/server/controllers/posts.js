@@ -191,18 +191,24 @@ export const deletePost = async (req, res) => {
 
 
 
-// export const getReportedPosts = async (req, res) => {
+export const getReportedPosts = async (req, res) => {
 
-//     try {
-//         let posts = await Post.find()
+    try {
+        let posts = await Post.find()
 
-//         const formattedFriends = posts.map(
-//             ({ _id, firstName, lastName, location, picturePath, email, Active }) => {
-//                 return { _id, firstName, lastName, location, picturePath, email, Active };
-//             }
-//         );
-//         res.status(200).json({ message: 'Users', success: true, formattedFriends })
-//     } catch (error) {
-//         res.status(500).json({ error: error.message, message: "error while fetching users", success: false })
-//     }
-// }
+        const formattedPosts = posts.map(
+
+            ({ _id, firstName, location, report }) => {
+             
+                    return { _id, firstName, location, report };
+              
+            }
+        );
+        res.status(200).json({ message: 'Users', success: true, formattedPosts })
+
+
+
+    } catch (error) {
+        res.status(500).json({ error: error.message, message: "error while fetching users", success: false })
+    }
+}

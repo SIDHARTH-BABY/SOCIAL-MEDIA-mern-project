@@ -17,6 +17,11 @@ import { setLogin } from "../../state";
 import Dropzone from "react-dropzone";
 import FlexBetween from "../../components/FlexBetween";
 
+// import otpForm from "./otpForm";
+
+import OtpFormm from "./OtpFormm";
+
+
 const registerSchema = yup.object().shape({
   firstName: yup.string().required("required"),
   lastName: yup.string().required("required"),
@@ -54,6 +59,10 @@ const initialValuesLogin = {
 
 const Form = () => {
   const [pageType, setPageType] = useState("login");
+  const [otpField, setOtpField] = useState(false);
+  const [otp, setOtp] = useState("");
+  const [userDetails, setUserDetails] = useState();
+  const [regButton, setRegButton] = useState(true);
   const { palette } = useTheme();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -61,8 +70,7 @@ const Form = () => {
   const isLogin = pageType === "login";
   const isRegister = pageType === "register";
 
-
-//   REGISTER
+  //   REGISTER
 
   const register = async (values, onSubmitProps) => {
     // this allows us to send form info with image
@@ -71,22 +79,33 @@ const Form = () => {
       formData.append(value, values[value]);
     }
     formData.append("picturePath", values.picture.name);
-    const savedUserResponse = await fetch(
-      "http://localhost:5000/auth/register",
-      {
-        method: "POST",
-        body: formData,
-      }
-    );
-    const savedUser = await savedUserResponse.json();
-    onSubmitProps.resetForm();
+    setUserDetails(formData);
+    console.log(formData,'jjjjjjjjj');
+    const savedUserResponse = await fetch("http://localhost:5000/send-otp", {
+      method: "POST",
+      body: formData,
+    });
+    const response = await savedUserResponse.json();
+    // onSubmitProps.resetForm();
 
-    if (savedUser) {
-      setPageType("login");
+    if (response) {
+      console.log(response, "otppppp");
+      setRegButton(false)
+      if (response.message === "OTP sent") {
+        // setPageType("login");
+        setOtpField(true);
+        setOtp(response.response.otp);
+        
+      } else {
+        console.log("erororrr");
+      }
     }
   };
+  
 
-// LOGIN
+ 
+
+  // LOGIN
   const login = async (values, onSubmitProps) => {
     const loggedInResponse = await fetch("http://localhost:5000/auth/login", {
       method: "POST",
@@ -111,6 +130,8 @@ const Form = () => {
     if (isRegister) await register(values, onSubmitProps);
   };
   return (
+    <div>
+    
     <Formik
       onSubmit={handleFormSubmit}
       initialValues={isLogin ? initialValuesLogin : initialValuesRegister}
@@ -217,6 +238,8 @@ const Form = () => {
                     )}
                   </Dropzone>
                 </Box>
+
+               
               </>
             )}
 
@@ -246,7 +269,7 @@ const Form = () => {
             {/* BUTTON   */}
 
             <Box>
-              <Button
+            {regButton? ( <Button
                 fullWidth
                 type="submit"
                 sx={{
@@ -258,7 +281,7 @@ const Form = () => {
                 }}
               >
                 {isLogin ? "LOGIN" : "REGISTER"}
-              </Button>
+              </Button>) : null}
               <Typography
                 onClick={() => {
                   setPageType(isLogin ? "register" : "login");
@@ -281,7 +304,12 @@ const Form = () => {
           </Box>
         </form>
       )}
+     
+
+    
     </Formik>
+    {otpField? <OtpFormm userDetails={userDetails} otp={otp} setPageType={setPageType}   setOtpField={setOtpField} setRegButton={setRegButton}/>  : null }
+    </div>
   );
 };
 
