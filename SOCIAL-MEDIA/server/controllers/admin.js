@@ -86,7 +86,7 @@ export const getFullUsers = async (req, res) => {
 export const blockUser = async (req, res, next) => {
     try {
         const userID = req.body.userID
-        console.log(userID,'user id at block');
+        console.log(userID, 'user id at block');
         await User.updateOne({ _id: userID }, {
             $set: {
                 Active: false

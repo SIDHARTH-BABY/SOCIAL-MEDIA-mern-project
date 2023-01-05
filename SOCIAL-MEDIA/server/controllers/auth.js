@@ -19,7 +19,7 @@ export const sendOtp = async (req, res) => {
             occupation, } = req.body;
 
 
-console.log(req.body,'fisrt emailllll');
+        console.log(req.body, 'fisrt emailllll');
         const emailExist = await User.findOne({ email: email });
 
         if (emailExist) {

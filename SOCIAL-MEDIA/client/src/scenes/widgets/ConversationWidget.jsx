@@ -29,7 +29,7 @@ const ConversationWidget = ({ data, currentUserId, online }) => {
       <div className="follower conversation">
         <div>
           {online && <div className="online-dot"></div>}
-         
+
           <img
             src={`http://localhost:5000/assets/${
               userData ? userData.picturePath : console.log("nothinggg")

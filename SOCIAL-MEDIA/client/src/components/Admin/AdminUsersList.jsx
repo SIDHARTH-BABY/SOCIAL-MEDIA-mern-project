@@ -10,11 +10,8 @@ const AdminUsersList = () => {
 
   const { Column } = Table;
 
-
-
   const blockUser = async (userID) => {
     try {
-      
       const response = await axios.post(
         "http://localhost:5000/admin/block-user",
         { userID }
@@ -30,7 +27,6 @@ const AdminUsersList = () => {
 
   const unBlockUser = async (userID) => {
     try {
-      
       const response = await axios.post(
         "http://localhost:5000/admin/unblock-user",
         { userID }
@@ -68,8 +64,6 @@ const AdminUsersList = () => {
         <Column title="Name" dataIndex="firstName" key="firstName" />
         <Column title="Email" dataIndex="location" key="location" />
         <Column title="Email" dataIndex="email" key="age" />
-
-       
 
         <Column
           title="Action"

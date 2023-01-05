@@ -36,7 +36,7 @@ const UserWidget = ({ userId, picturePath }) => {
   const handleClose = () => setOpen(false);
   useEffect(() => {
     if (userId === currUserId._id) {
-      console.log(currUserId);
+
       setIsCurrUser(true)
 
     } else {
@@ -117,7 +117,7 @@ const UserWidget = ({ userId, picturePath }) => {
   } = user;
 
   return (
-    <WidgetWrapper>
+    <WidgetWrapper sx={{ position: "sticky", top: "0" }}>
 
       {/* FIRST ROW */}
 

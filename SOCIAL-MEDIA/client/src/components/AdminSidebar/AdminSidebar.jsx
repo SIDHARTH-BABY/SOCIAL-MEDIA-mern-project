@@ -24,19 +24,12 @@ const AdminSidebar = () => {
       name: "Post Manage",
       link: "/admin-post-report",
     },
-  
   ];
   return (
     <WidgetWrapper>
       {/* FIRST ROW */}
 
-      <FlexBetween
-        gap="2.5rem"
-        pb="3.1rem"
-       
-      >
-       
-
+      <FlexBetween gap="2.5rem" pb="3.1rem">
         <div className="main">
           <div className="d-flex layout">
             <div className="sidebar">

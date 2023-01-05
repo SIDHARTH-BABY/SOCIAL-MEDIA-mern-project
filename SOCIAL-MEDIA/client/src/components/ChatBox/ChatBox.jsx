@@ -7,12 +7,11 @@ import { format } from "timeago.js";
 // import InputEmoji from "react-input-emoji";
 import axios from "axios";
 
-const ChatBox = ({ chat, currentUser, setSendMessage, receivedMessage  }) => {
+const ChatBox = ({ chat, currentUser, setSendMessage, receivedMessage }) => {
   const [userData, setUserData] = useState(null);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const token = useSelector((state) => state.token);
- 
 
   const handleChange = (e) => {
     setNewMessage(e.target.value);
@@ -68,9 +67,6 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receivedMessage  }) => {
     if (chat !== null) fetchMessages();
   }, [chat]);
 
-
-  
-
   const handleSend = async (e) => {
     e.preventDefault();
     const message = {
@@ -117,12 +113,12 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receivedMessage  }) => {
     }
   }, [receivedMessage]);
 
-    // Always scroll to last Message
-    // useEffect(() => {
-    //   scroll.current?scroll.current.scrollIntoView({ behavior: "smooth" }): "";
-    // }, [messages]);
+  // Always scroll to last Message
+  // useEffect(() => {
+  //   scroll.current?scroll.current.scrollIntoView({ behavior: "smooth" }): "";
+  // }, [messages]);
 
-    const scroll = useRef();
+  const scroll = useRef();
   return (
     <>
       <div className="ChatBox-container">
@@ -152,8 +148,7 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receivedMessage  }) => {
                         {userData ? userData.firstName : ""}{" "}
                         {userData ? userData.lastName : ""}
                       </span>
-                      <br/>
-                    
+                      <br />
                     </div>
                   </div>
                 </div>

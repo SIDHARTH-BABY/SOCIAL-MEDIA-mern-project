@@ -11,10 +11,7 @@ import { setPost, setPosts } from "../../state";
 import { useReducer } from "react";
 const ITEM_HEIGHT = 48;
 
-const PostDelete = ({ setLoading,postUserId, postId }) => {
-  
-
-  
+const PostDelete = ({ setLoading, postUserId, postId }) => {
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -28,30 +25,29 @@ const PostDelete = ({ setLoading,postUserId, postId }) => {
   const loggedInUserId = useSelector((state) => state.user._id);
 
   const deletePost = async (postId) => {
-    console.log(postId,'noww post Id ');
+    console.log(postId, "noww post Id ");
     let response = await axios.post("http://localhost:5000/posts/post-delete", {
-      postId
+      postId,
     });
-    if(response.data.success){
-     
-      let updatedPosts =  response.data.newposts
-      console.log(updatedPosts,'ithannu new posts');
+    if (response.data.success) {
+      let updatedPosts = response.data.newposts;
+      console.log(updatedPosts, "ithannu new posts");
       dispatch(setPost({ post: updatedPosts }));
       setLoading(false);
-  
     }
   };
- 
 
   const reportPost = async (postId) => {
-    console.log(postId,'noww post Id ');
-    let response = await axios.patch(`http://localhost:5000/posts/${postId}/report`, {
-      loggedInUserId
-    });
-    if(response.data.success){
-     
-      let updatedPosts =  response.data.newposts
-      console.log(updatedPosts,'ithannu new posts');
+    console.log(postId, "noww post Id ");
+    let response = await axios.patch(
+      `http://localhost:5000/posts/${postId}/report`,
+      {
+        loggedInUserId,
+      }
+    );
+    if (response.data.success) {
+      let updatedPosts = response.data.newposts;
+      console.log(updatedPosts, "ithannu new posts");
       dispatch(setPost({ post: updatedPosts }));
     }
   };
@@ -88,7 +84,6 @@ const PostDelete = ({ setLoading,postUserId, postId }) => {
             <Button
               onClick={() => {
                 deletePost(postId);
-               
               }}
             >
               Delete
@@ -96,11 +91,16 @@ const PostDelete = ({ setLoading,postUserId, postId }) => {
           </MenuItem>
         ) : (
           <MenuItem onClick={handleClose}>
-            <Button onClick={()=>{reportPost(postId)}}>Report?</Button>
+            <Button
+              onClick={() => {
+                reportPost(postId);
+              }}
+            >
+              Report?
+            </Button>
           </MenuItem>
         )}
       </Menu>
-     
     </div>
   );
 };

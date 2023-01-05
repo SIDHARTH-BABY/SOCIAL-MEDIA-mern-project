@@ -12,29 +12,29 @@ const transporter = nodeMailer.createTransport({
 
 export const otpSend = (email) => {
   try {
-    console.log(email,'emaillllllll');
+    console.log(email, 'emaillllllll');
     // console.log(transporter,"TRANSPORTER")
     return new Promise(async (resolve, reject) => {
       const otp = `${Math.floor(10000 + Math.random() * 99999)}`;
-      console.log(otp,'otpppp');
+      console.log(otp, 'otpppp');
       const mailOptions = {
         from: process.env.FROM_EMAIL,
         to: email,
         subject: "Verify your email ",
         html: `Your email verification code is : ${otp}`,
-        
+
       };
       console.log('heloooooooooooooo');
       await transporter
         .sendMail(mailOptions)
         .then((response) => {
-            console.log(response,'ppppppppppppppppppp');
+          console.log(response, 'ppppppppppppppppppp');
           response.otp = otp;
           resolve(response);
         })
         .catch((err) => {
-            console.log("ERROR OTP")
-            console.log(err,'eroorrrrr');
+          console.log("ERROR OTP")
+          console.log(err, 'eroorrrrr');
           resolve(err);
         });
     }).catch((err) => {

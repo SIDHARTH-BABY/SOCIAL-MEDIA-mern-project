@@ -21,7 +21,7 @@ const FriendListWidget = ({ userId }) => {
             }
         );
         const data = await response.json();
-     
+
         dispatch(setFriends({ friends: data }));
     };
 
@@ -31,7 +31,7 @@ const FriendListWidget = ({ userId }) => {
 
 
     return (
-        <WidgetWrapper>
+        <WidgetWrapper sx={{ position: "sticky", top: "0" }} >
             <Typography
                 color={palette.neutral.dark}
                 variant="h5"

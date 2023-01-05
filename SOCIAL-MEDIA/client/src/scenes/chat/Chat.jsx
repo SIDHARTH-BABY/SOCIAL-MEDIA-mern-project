@@ -82,7 +82,11 @@ const Chat = () => {
                       setCurrentChat(chat);
                     }}
                   >
-                    <ConversationWidget data={chat} currentUserId={user._id}   online={checkOnlineStatus(chat)}/>
+                    <ConversationWidget
+                      data={chat}
+                      currentUserId={user._id}
+                      online={checkOnlineStatus(chat)}
+                    />
                   </div>
                 ))}
               </div>

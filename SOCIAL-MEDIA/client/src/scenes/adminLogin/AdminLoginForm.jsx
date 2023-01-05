@@ -8,25 +8,25 @@ const AdminLoginForm = () => {
 
   const onFinish = async (values) => {
     try {
-    
-      const data = await axios.post("http://localhost:5000/admin/login", values);
+      const data = await axios.post(
+        "http://localhost:5000/admin/login",
+        values
+      );
 
       if (data.data.success) {
         console.log(data);
         localStorage.setItem("admin-token", data.data.token);
         navigate("/admin-home");
       } else {
-      
-        console.log(data,'erorrr');
+        console.log(data, "erorrr");
       }
     } catch (error) {
       console.log(error);
-    
     }
   };
 
   return (
-    <Form layout="vertical"  onFinish={onFinish}>
+    <Form layout="vertical" onFinish={onFinish}>
       <Form.Item label="Email" name="email">
         <Input placeholder="Email" />
       </Form.Item>

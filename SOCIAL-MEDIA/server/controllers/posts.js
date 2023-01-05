@@ -198,13 +198,21 @@ export const getReportedPosts = async (req, res) => {
 
         const formattedPosts = posts.map(
 
-            ({ _id, firstName, location, report }) => {
-             
-                    return { _id, firstName, location, report };
-              
+            ({ _id, firstName, location }) => {
+
+                return { _id, firstName, location };
+
             }
         );
-        res.status(200).json({ message: 'Users', success: true, formattedPosts })
+        const formattedReports = posts.map(
+
+            ({ report }) => {
+
+                return { report };
+
+            }
+        );
+        res.status(200).json({ message: 'Users', success: true, formattedPosts, formattedReports })
 
 
 

@@ -124,7 +124,7 @@ const MyPostWidget = ({ picturePath }) => {
 
 
 
-            
+
 
             <Divider sx={{ margin: "1.25rem 0" }} />
 
@@ -148,7 +148,7 @@ const MyPostWidget = ({ picturePath }) => {
                         </FlexBetween>
 
                         <FlexBetween gap="0.25rem" onClick={() => setIsClip(!isClip)}>
-                            <AttachFileOutlined sx={{ color: mediumMain }}  />
+                            <AttachFileOutlined sx={{ color: mediumMain }} />
                             <Typography color={mediumMain}>Attachment</Typography>
                         </FlexBetween>
 

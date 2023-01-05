@@ -51,12 +51,12 @@ const UserSchema = new mongoose.Schema({
     Active: {
         type: Boolean,
         default: true
-      },
+    },
     location: String,
     occupation: String,
-    viewProfile:Number,
-    impressions:Number,
-}, {timestamps: true}
+    viewProfile: Number,
+    impressions: Number,
+}, { timestamps: true }
 )
 
 const User = mongoose.model('users', UserSchema)

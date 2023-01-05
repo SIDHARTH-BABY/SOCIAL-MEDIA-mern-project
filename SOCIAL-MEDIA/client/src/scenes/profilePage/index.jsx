@@ -1,30 +1,31 @@
-
-import React  from 'react';
+import React from "react";
 import { Box, useMediaQuery } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useLocation, useParams } from "react-router-dom";
 
-import FriendListWidget from '../widgets/FriendListWidget';
-import Navbar from '../navbar';
-import UserWidget from '../widgets/UserWidget';
-import MyPostWidget from '../widgets/MyPostWidget';
-import PostsWidget from '../widgets/PostsWidget';
+import FriendListWidget from "../widgets/FriendListWidget";
+import Navbar from "../navbar";
+import UserWidget from "../widgets/UserWidget";
+import MyPostWidget from "../widgets/MyPostWidget";
+import PostsWidget from "../widgets/PostsWidget";
 const ProfilePage = () => {
   const [user, setUser] = useState(null);
-  const location  = useLocation();
+  const location = useLocation();
   const token = useSelector((state) => state.token);
   const isNonMobileScreens = useMediaQuery("(min-width:1000px)");
 
   const getUser = async () => {
-    const response = await fetch(`http://localhost:5000/users/${location.state.userId}`, {
-      method: "GET",
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const response = await fetch(
+      `http://localhost:5000/users/${location.state.userId}`,
+      {
+        method: "GET",
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
     const data = await response.json();
     setUser(data);
   };
-
 
   useEffect(() => {
     getUser();
@@ -32,10 +33,8 @@ const ProfilePage = () => {
 
   if (!user) return null;
 
-
   return (
-    
- <Box>
+    <Box>
       <Navbar />
       <Box
         width="100%"
@@ -45,7 +44,10 @@ const ProfilePage = () => {
         justifyContent="center"
       >
         <Box flexBasis={isNonMobileScreens ? "26%" : undefined}>
-          <UserWidget userId={location.state.userId} picturePath={user.picturePath} />
+          <UserWidget
+            userId={location.state.userId}
+            picturePath={user.picturePath}
+          />
           <Box m="2rem 0" />
           <FriendListWidget userId={location.state.userId} />
         </Box>

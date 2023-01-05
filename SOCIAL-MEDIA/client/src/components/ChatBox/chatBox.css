@@ -9,7 +9,6 @@
   padding: 1rem 1rem 0rem 1rem;
   display: flex;
   flex-direction: column;
- 
 }
 
 .chat-body {
@@ -37,7 +36,6 @@
   font-size: 0.7rem;
   color: var(--textColor);
   align-self: end;
- 
 }
 
 .own {
@@ -49,7 +47,7 @@
 .chat-sender {
   background: rgb(3, 3, 3);
   display: flex;
-  
+
   height: 4.5rem;
   align-items: center;
   gap: 1rem;
@@ -80,7 +78,7 @@
   height: 70%;
   padding: 0px 15px 0px 15px;
 }
-.send-button{
+.send-button {
   cursor: pointer;
   background: linear-gradient(98.63deg, #24e4f0 0%, #358ff9 100%);
   border-radius: 0.5rem;

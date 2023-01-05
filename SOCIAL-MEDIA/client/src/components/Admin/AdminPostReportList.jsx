@@ -13,7 +13,6 @@ const AdminPostReportList = () => {
       );
 
       if (response.data.success) {
-        console.log(response.data.formattedPosts);
         setPosts(response.data.formattedPosts);
       }
     };
@@ -27,10 +26,6 @@ const AdminPostReportList = () => {
         <Column title="UserName" dataIndex="firstName" key="firstName" />
         <Column title="Post Id" dataIndex="_id" key="PostId" />
         <Column title="Location" dataIndex="location" key="location" />
-        <Column title="No: of reports" dataIndex="report" key="report" />
-       
-     
-
       </Table>
     </div>
   );

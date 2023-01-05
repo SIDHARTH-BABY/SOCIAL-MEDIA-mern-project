@@ -60,7 +60,7 @@ const Navbar = () => {
         >
           EDNOX
         </Typography>
-        {isNonMobileScreens && (
+        {/* {isNonMobileScreens && (
           <FlexBetween
             backgroundColor={neutralLight}
             borderRadius="9px"
@@ -68,11 +68,11 @@ const Navbar = () => {
             padding="0.1rem 1.5rem"
           >
             <InputBase placeholder="...search" />
-            <IconButton>
+            <IconButton> 
               <Search />
             </IconButton>
           </FlexBetween>
-        )}
+        )} */}
       </FlexBetween>
 
       {/* //DESKTOP NAV */}
@@ -93,7 +93,7 @@ const Navbar = () => {
           />
 
           <Notifications sx={{ fontSize: "25px" }} />
-         
+
           <FormControl variant="standard" value={fullName}>
             <Select
               value={fullName}
@@ -169,9 +169,12 @@ const Navbar = () => {
                 <LightMode sx={{ color: dark, fontSize: "25px" }} />
               )}
             </IconButton>
-            <Message onClick={() => navigate("../chat")} sx={{ fontSize: "25px" }} />
+            <Message
+              onClick={() => navigate("../chat")}
+              sx={{ fontSize: "25px" }}
+            />
             <Notifications sx={{ fontSize: "25px" }} />
-          
+
             <FormControl variant="standard" value={fullName}>
               <Select
                 value={fullName}

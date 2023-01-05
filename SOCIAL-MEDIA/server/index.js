@@ -15,12 +15,12 @@ import chatRoutes from "./routes/chat.js"
 import MessageRoute from './routes/message.js'
 // import AdminRoute from './routes/admin.js'
 
-import {register, sendOtp} from './controllers/auth.js'
+import { register, sendOtp } from './controllers/auth.js'
 import { createPost } from './controllers/posts.js';
 import { verifyToken } from './middleware/auth.js';
 import User from "./models/User.js"
 import Post from './models/Post.js'
-import {users , posts } from './data/index.js'
+import { users, posts } from './data/index.js'
 import { adminLogin, adminRegister, blockUser, getFullUsers, unBlockUser } from './controllers/admin.js';
 
 
@@ -52,38 +52,38 @@ const storage = multer.diskStorage({
     }
 })
 
-const upload = multer({storage})
+const upload = multer({ storage })
 
 
 //ROUTES WITH FILES
-app.post("/auth/register",upload.single("picture"), register)
-app.post("/posts",verifyToken,upload.single("picture"),createPost)
-app.post("/send-otp",upload.single("picture"),sendOtp)
-app.post("/admin/register",adminRegister)
-app.post("/admin/login",adminLogin)
-app.get("/admin/get-users",getFullUsers)
-app.post("/admin/block-user",blockUser)
-app.post("/admin/unblock-user",unBlockUser)
+app.post("/auth/register", upload.single("picture"), register)
+app.post("/posts", verifyToken, upload.single("picture"), createPost)
+app.post("/send-otp", upload.single("picture"), sendOtp)
+app.post("/admin/register", adminRegister)
+app.post("/admin/login", adminLogin)
+app.get("/admin/get-users", getFullUsers)
+app.post("/admin/block-user", blockUser)
+app.post("/admin/unblock-user", unBlockUser)
 
 
 
 
 //ROUTES
-app.use("/auth",authRoutes)
-app.use("/users",userRoutes)
-app.use("/posts",postRoutes)
-app.use("/chat",chatRoutes)
-app.use("/message",MessageRoute)
+app.use("/auth", authRoutes)
+app.use("/users", userRoutes)
+app.use("/posts", postRoutes)
+app.use("/chat", chatRoutes)
+app.use("/message", MessageRoute)
 // app.use("/admin",AdminRoute)
 
 //MONGOOSE
-const PORT =process.env.PORT || 5000
-mongoose.connect(process.env.MONGO_URL,{
-    useNewUrlParser :true,
-    useUnifiedTopology :true
-}).then(()=>{
-app.listen(PORT,()=> console.log(`server port: ${PORT}`))
- /* ADD DATA ONE TIME */
-// User.insertMany(users);
-// Post.insertMany(posts);
-}).catch((error)=>console.log(`${error}did not connect`))
+const PORT = process.env.PORT || 5000
+mongoose.connect(process.env.MONGO_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+}).then(() => {
+    app.listen(PORT, () => console.log(`server port: ${PORT}`))
+    /* ADD DATA ONE TIME */
+    // User.insertMany(users);
+    // Post.insertMany(posts);
+}).catch((error) => console.log(`${error}did not connect`))
