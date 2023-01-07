@@ -26,10 +26,12 @@ const postSchema = mongoose.Schema(
       type: Map,  //that's how mongodb save
       of: Boolean,
     },
-    comments: {
-      type: Array,
-      default: [],
-    },
+    comments: [
+      {
+        username: String,
+        comment: String
+      }
+    ]
   },
   { timestamps: true }
 );

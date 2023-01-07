@@ -25,6 +25,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPost } from "../../state";
 import PostDelete from "../postDelete/PostDelete";
+import axios from "axios";
 const ITEM_HEIGHT = 48;
 const PostWidget = ({
   postId,
@@ -41,6 +42,7 @@ const PostWidget = ({
   const dispatch = useDispatch();
   const [comment, setComment] = useState("");
   const token = useSelector((state) => state.token);
+  const user = useSelector((state) => state.user);
 
   const loggedInUserId = useSelector((state) => state.user._id);
   const isLiked = Boolean(likes[loggedInUserId]);
@@ -48,6 +50,7 @@ const PostWidget = ({
 
   const { palette } = useTheme();
   const main = palette.neutral.main;
+  const medium = palette.neutral.medium;
   const primary = palette.primary.main;
 
   const [loading, setLoading] = useState(true);
@@ -66,21 +69,15 @@ const PostWidget = ({
   };
 
   const patchComment = async () => {
-    const response = await fetch(
-      `http://localhost:5000/posts/${postId}/comment`,
-      {
-        method: "PATCH",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-
-        body: JSON.stringify({ description: comment }),
-      }
-    );
-    const updatedComment = await response.json();
-    console.log(updatedComment, "new Comment");
-    dispatch(setPost({ post: updatedComment }));
+    const userName = user.firstName + " " + user.lastName;
+    const response = await axios.patch(`http://localhost:5000/posts/comment`, {
+      comment,
+      userName,
+      postId,
+    });
+    if (response) {
+      dispatch(setPost({ post: response.data.newCommentPost }));
+    }
   };
 
   return (
@@ -130,6 +127,7 @@ const PostWidget = ({
                     <TextField
                       id="outlined-name"
                       label="Comment"
+                      required
                       onChange={(e) => setComment(e.target.value)}
                       InputProps={{
                         endAdornment: (
@@ -159,8 +157,12 @@ const PostWidget = ({
               {comments.map((comment, i) => (
                 <Box key={`${name}-${i}`}>
                   <Divider />
+                  <Typography sx={{ color: medium, m: "0.5rem 0", pl: "1rem" }}>
+                    {comment.username}
+                  </Typography>
+
                   <Typography sx={{ color: main, m: "0.5rem 0", pl: "1rem" }}>
-                    {comment}
+                    {comment.comment}
                   </Typography>
                 </Box>
               ))}

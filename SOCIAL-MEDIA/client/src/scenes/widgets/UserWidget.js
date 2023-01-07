@@ -4,7 +4,9 @@ import {
   EditOutlined,
   LocationOnOutlined,
   WorkOutlineOutlined,
+  Message,
 } from "@mui/icons-material";
+import TextsmsIcon from '@mui/icons-material/Textsms';
 import { Box, Typography, Divider, useTheme, ButtonBase } from "@mui/material";
 import UserImage from "../../components/UserImage";
 import FlexBetween from "../../components/FlexBetween";
@@ -44,6 +46,19 @@ const UserWidget = ({ userId, picturePath }) => {
 
     }
   }, [isCurrUser])
+
+  const createChat = async () => {
+    const senderId = currUserId._id
+    const receiverId = userId
+
+    const response = await axios.post("http://localhost:5000/chat/", { senderId, receiverId })
+
+    if (response) {
+      navigate("../chat")
+    }
+
+
+  }
 
   const style = {
     position: 'absolute',
@@ -150,16 +165,23 @@ const UserWidget = ({ userId, picturePath }) => {
           <LocationOnOutlined fontSize="large" sx={{ color: main }} />
           <Typography color={medium}>{location}</Typography>
         </Box>
-        <Box display="flex" alignItems="center" gap="1rem">
+        <Box display="flex" alignItems="center" gap="1rem" mb="0.5rem">
           <WorkOutlineOutlined fontSize="large" sx={{ color: main }} />
           <Typography color={medium}>{occupation}</Typography>
         </Box>
+
+
 
         {isCurrUser ?
           <Box display="flex" alignItems="center" gap="1rem">
             <CreateIcon fontSize="large" sx={{ color: main }} />
             <ButtonBase onClick={handleOpen} > <Typography color={medium}>Edit Profile</Typography></ButtonBase>
-          </Box> : null}
+          </Box> : <Box display="flex" alignItems="center" gap="1rem">
+            <TextsmsIcon fontSize="large" sx={{ cursor: "pointer" }}
+              onClick={() => { createChat() }} >Message</TextsmsIcon>
+
+            <Typography color={medium}>Message</Typography>
+          </Box>}
       </Box>
 
       <Divider />
@@ -229,23 +251,23 @@ const UserWidget = ({ userId, picturePath }) => {
 
             <Form layout="vertical" onFinish={onFinish}>
 
-              <Form.Item label="First Name" name="firstName" >
+              <Form.Item label={<label style={{ color: "white" }}>First Name</label>} name="firstName" >
                 <Input placeholder={currUserId.firstName} />
               </Form.Item>
 
-              <Form.Item label="Last Name" name="lastName">
+              <Form.Item label={<label style={{ color: "white" }}>Last Name</label>} name="lastName">
                 <Input placeholder={currUserId.lastName} />
               </Form.Item>
 
-              <Form.Item label="Location" name="location">
+              <Form.Item label={<label style={{ color: "white" }}>Location</label>} name="location">
                 <Input placeholder={currUserId.location} />
               </Form.Item>
 
-              <Form.Item label="Occupation" name="occupation">
+              <Form.Item label={<label style={{ color: "white" }}>Occupation</label>} name="occupation">
                 <Input placeholder={currUserId.occupation} />
               </Form.Item>
 
-              <Form.Item label="Occupation" name="_id" hidden={true} initialValue={currUserId._id}>
+              <Form.Item name="_id" hidden={true} initialValue={currUserId._id}>
                 <Input />
 
               </Form.Item>

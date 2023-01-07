@@ -18,7 +18,7 @@ router.patch("/:id/report", reportPost);
 
 
 
-router.patch("/:id/comment", commentPost);
+router.patch("/comment", commentPost);
 
 router.post("/post-delete", deletePost);
 

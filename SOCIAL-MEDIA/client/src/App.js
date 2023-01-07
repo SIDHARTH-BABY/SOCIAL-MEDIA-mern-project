@@ -13,9 +13,11 @@ import Chat from "./scenes/chat/Chat";
 import AdminLogin from "./scenes/adminLogin/AdminLogin";
 import AdminHome from "./scenes/adminHome/AdminHome";
 import ProtectedRoute from "./components/Admin/AdminProtectedRoute";
-import EditProfileform from "./scenes/editUserProfile/EditProfileform";
+
 import AdminPostReport from "./scenes/adminReport/AdminPostReport";
 import OtpFormm from "./scenes/loginPage/OtpFormm";
+import Errorpage from "./scenes/errorPage/Errorpage";
+
 
 
 
@@ -30,7 +32,7 @@ function App() {
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <Routes>
-            <Route path="/" element={isAuth? <HomePage /> : <LoginPage />} />
+            <Route path="/" element={isAuth ? <HomePage /> : <LoginPage />} />
             <Route path="/otp-page" element={<OtpFormm />} />
 
             <Route
@@ -41,10 +43,7 @@ function App() {
               path="/profile"
               element={isAuth ? <ProfilePage /> : <Navigate to="/" />}
             />
-            <Route
-              path="/edit-profile"
-              element={isAuth ? <EditProfileform /> : <Navigate to="/" />}
-            />
+
             <Route
               path="/chat"
               element={isAuth ? <Chat /> : <Navigate to="/" />}
@@ -61,7 +60,11 @@ function App() {
               path="/admin-post-report"
               element={<ProtectedRoute><AdminPostReport /></ProtectedRoute>}
             />
-            
+            <Route
+              path="/*"
+              element={<Errorpage />}
+            />
+
 
           </Routes>
         </ThemeProvider>

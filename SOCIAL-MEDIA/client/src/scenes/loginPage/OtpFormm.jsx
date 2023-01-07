@@ -1,6 +1,7 @@
 import React from "react";
 import { Form, Input, Button } from "antd";
 import axios from "axios";
+
 const OtpFormm = ({
   userDetails,
   otp,
@@ -9,13 +10,13 @@ const OtpFormm = ({
   setRegButton,
 }) => {
   const onFinish = async (value) => {
-    console.log(userDetails, "jkkkkkk", otp, "jjjjjjjjjjjjjjjjjjjjjjjjj");
+   
     try {
       if (otp === value.otp) {
         axios
           .post("http://localhost:5000/auth/register", userDetails)
           .then((response) => {
-            console.log(response, "response");
+           
             setOtpField(false);
             setRegButton(true);
             setPageType("login");
@@ -30,8 +31,8 @@ const OtpFormm = ({
   return (
     <div>
       <Form layout="vertical" onFinish={onFinish}>
-        <Form.Item label="Otp" name="otp">
-          <Input placeholder="Otp " />
+        <Form.Item    label={<label style={{ color: "white" }}>ENTER YOUR OTP</label>} name="otp">
+          <Input placeholder="Enter OTP " />
         </Form.Item>
 
         <div className="d-flex flex-column">

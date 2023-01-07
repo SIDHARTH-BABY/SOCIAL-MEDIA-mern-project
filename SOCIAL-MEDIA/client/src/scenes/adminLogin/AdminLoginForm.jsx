@@ -27,16 +27,22 @@ const AdminLoginForm = () => {
 
   return (
     <Form layout="vertical" onFinish={onFinish}>
-      <Form.Item label="Email" name="email">
+      <Form.Item
+        name="email"
+        label={<label style={{ color: "white" }}>Email</label>}
+      >
         <Input placeholder="Email" />
       </Form.Item>
 
-      <Form.Item label="Password" name="password">
+      <Form.Item
+        label={<label style={{ color: "white" }}>Password</label>}
+        name="password"
+      >
         <Input placeholder="Password" type="password" />
       </Form.Item>
       <div className="d-flex flex-column">
         <Button
-          className="primary-button my-2 full-width-button"
+         className="d-flex flex-column"
           htmlType="submit"
         >
           Login

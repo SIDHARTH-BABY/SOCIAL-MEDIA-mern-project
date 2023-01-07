@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken"
 import Admin from "../models/Admin.js"
 import bcrypt from "bcrypt"
 import User from "../models/User.js";
-
+import Post from "../models/Post.js";
 
 export const adminRegister = async (req, res) => {
     try {
@@ -109,5 +109,21 @@ export const unBlockUser = async (req, res, next) => {
         res.status(201).json({ unblockstatus: true, success: true })
     } catch (error) {
         console.log(error)
+    }
+}
+
+export const viewPost = async (req, res) => {
+
+    try {
+
+        const { postId } = req.body
+
+        let post = await Post.findById(postId)
+
+        console.log(post, 'nowww');
+
+        res.status(200).json({ message: 'Posts', success: true, post })
+    } catch (error) {
+        res.status(500).json({ error: error.message, message: "error while fetching users", success: false })
     }
 }

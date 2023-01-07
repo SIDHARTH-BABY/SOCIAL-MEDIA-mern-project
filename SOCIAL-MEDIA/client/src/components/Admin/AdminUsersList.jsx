@@ -7,6 +7,7 @@ import { useState } from "react";
 
 const AdminUsersList = () => {
   const [user, setUser] = useState([]);
+  const [active, setActive] = useState([]);
 
   const { Column } = Table;
 
@@ -70,27 +71,29 @@ const AdminUsersList = () => {
           key="action"
           render={(record) => (
             <span>
-              <Button
-                type={record.Active ? "" : "primary"}
+           {record.Active ? (  <Button
+                type="primary" 
+                danger
                 onClick={() => {
                   if (window.confirm("Do you want to block this user?"))
                     blockUser(record._id);
+
                 }}
               >
                 Block
-              </Button>
+              </Button>)
 
-              <Divider type="vertical" />
+           :
 
-              <Button
-                type={record.Active ? "primary" : ""}
+             ( <Button
+                type="primary"
                 onClick={() => {
                   if (window.confirm("Do you want to unblock this user?"))
                     unBlockUser(record._id);
                 }}
               >
                 UnBlock
-              </Button>
+              </Button>)}
             </span>
           )}
         />

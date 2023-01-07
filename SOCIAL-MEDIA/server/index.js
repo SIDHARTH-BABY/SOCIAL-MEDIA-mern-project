@@ -21,7 +21,7 @@ import { verifyToken } from './middleware/auth.js';
 import User from "./models/User.js"
 import Post from './models/Post.js'
 import { users, posts } from './data/index.js'
-import { adminLogin, adminRegister, blockUser, getFullUsers, unBlockUser } from './controllers/admin.js';
+import { adminLogin, adminRegister, blockUser, getFullUsers, unBlockUser, viewPost } from './controllers/admin.js';
 
 
 
@@ -64,6 +64,7 @@ app.post("/admin/login", adminLogin)
 app.get("/admin/get-users", getFullUsers)
 app.post("/admin/block-user", blockUser)
 app.post("/admin/unblock-user", unBlockUser)
+app.post("/admin/view-post", viewPost)
 
 
 

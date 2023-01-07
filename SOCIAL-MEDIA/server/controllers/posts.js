@@ -121,13 +121,19 @@ export const reportPost = async (req, res) => {
 
 export const commentPost = async (req, res) => {
     try {
-        const { id } = req.params;
-        const { description } = req.body;
-        const post = await Post.findById(id);
 
-        let commentUpdated = await post.updateOne({ $push: { comments: description } })
+        const postId = req.body.postId
+        const comments = {
+            username: req.body.userName,
+            comment: req.body.comment
+        }
 
-        const newCommentPost = await Post.findById(id);
+        await Post.updateOne({ _id: postId }, {
+            $push: {
+                comments
+            }
+        })
+        const newCommentPost = await Post.findById(postId);
 
         res.status(200).json({ message: 'Posts', success: true, newCommentPost });
 
@@ -198,9 +204,9 @@ export const getReportedPosts = async (req, res) => {
 
         const formattedPosts = posts.map(
 
-            ({ _id, firstName, location }) => {
+            ({ _id, firstName, location, report }) => {
 
-                return { _id, firstName, location };
+                return { _id, firstName, location, report };
 
             }
         );
