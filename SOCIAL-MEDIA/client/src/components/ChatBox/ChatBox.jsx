@@ -6,6 +6,8 @@ import { format } from "timeago.js";
 
 // import InputEmoji from "react-input-emoji";
 import axios from "axios";
+import { getUserProfile } from "../../api/UserRequest";
+import { addMessage, getMessages } from "../../api/MessageRequest";
 
 const ChatBox = ({ chat, currentUser, setSendMessage, receivedMessage }) => {
   const [userData, setUserData] = useState(null);
@@ -29,12 +31,9 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receivedMessage }) => {
     console.log(userId, "chatBox UserId");
     const getUserData = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/users/${userId}`, {
-          method: "GET",
+        const { data } = await getUserProfile(userId, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        const data = await response.json();
-        console.log(data, "ippo vannatha");
         setUserData(data);
       } catch (error) {
         console.log(error, "paraa");
@@ -48,17 +47,9 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receivedMessage }) => {
   useEffect(() => {
     const fetchMessages = async () => {
       try {
-        console.log(chat, "prefer");
-        console.log(chat._id, "hello world");
-        const response = await fetch(
-          `http://localhost:5000/message/${chat._id}`,
-          {
-            method: "GET",
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-        const data = await response.json();
-        console.log(data, "chat detailsss");
+        const { data } = await getMessages(chat._id, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         setMessages(data);
       } catch (error) {
         console.log(error, "nokkaa");
@@ -74,27 +65,14 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receivedMessage }) => {
       text: newMessage,
       chatId: chat._id,
     };
-    console.log(message, "measage");
+
     //Send message to database
     try {
-      const { data } = await axios.post(
-        "http://localhost:5000/message",
-        message,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      if (data) {
-        console.log(data, "new chat111111111111");
-
-        setMessages([...messages, data]);
-        console.log(messages, "kitiianam");
-        setNewMessage("");
-      } else {
-        console.log("no data");
-      }
+      const { data } = await addMessage(message, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setMessages([...messages, data]);
+      setNewMessage("");
     } catch (error) {
       console.log(error, "error ividee");
     }
@@ -152,7 +130,6 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receivedMessage }) => {
                     </div>
                   </div>
                 </div>
-             
               </div>
             </div>
             {/* ChatBox Messages */}

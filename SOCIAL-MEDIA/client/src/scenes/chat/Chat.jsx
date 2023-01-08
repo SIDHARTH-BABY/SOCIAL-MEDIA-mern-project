@@ -7,6 +7,7 @@ import Navbar from "../navbar";
 import ConversationWidget from "../widgets/ConversationWidget";
 import "./chat.css";
 import { io } from "socket.io-client";
+import { userChats } from "../../api/ChatRequest";
 const Chat = () => {
   const user = useSelector((state) => state.user);
   const token = useSelector((state) => state.token);
@@ -43,15 +44,13 @@ const Chat = () => {
     });
   }, []);
 
+
+    // Get the chat in chat section
   useEffect(() => {
+
     const getChats = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/chat/${user._id}`, {
-          method: "GET",
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        const data = await response.json();
-
+        const { data } = await userChats(user._id,{ headers: { Authorization: `Bearer ${token}` }});
         setChats(data);
       } catch (error) {
         console.log(error);
@@ -60,6 +59,7 @@ const Chat = () => {
     getChats();
   }, [user]);
 
+  
   const checkOnlineStatus = (chat) => {
     const chatMember = chat.members.find((member) => member !== user._id);
     const online = onlineUsers.find((user) => user.userId === chatMember);

@@ -1,6 +1,7 @@
 import React from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { GetUserPostData } from "../../api/PostRequest";
 import { setPosts } from "../../state";
 import PostWidget from "./PostWidget";
 
@@ -20,16 +21,15 @@ const PostsWidget = ({ userId, isProfile = false }) => {
   };
 
   const getUserPosts = async () => {
-    const response = await fetch(
-      `http://localhost:5000/posts/${userId}/posts`,
-      {
-        method: "GET",
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
-    const data = await response.json();
+    const response = await GetUserPostData(userId, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    console.log(response.data,'enthdaaaa');
 
-    dispatch(setPosts({ posts: data }));
+    if (response.data) {
+      const data = response.data
+      dispatch(setPosts({ posts: data }));
+    }
   };
 
   useEffect(() => {

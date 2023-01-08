@@ -16,10 +16,12 @@ import { useDispatch } from "react-redux";
 import { setLogin } from "../../state";
 import Dropzone from "react-dropzone";
 import FlexBetween from "../../components/FlexBetween";
-
+import toast from 'react-hot-toast'
 // import otpForm from "./otpForm";
 
 import OtpFormm from "./OtpFormm";
+import { sendOtp, userLogin } from "../../api/AuthRequest";
+
 
 const registerSchema = yup.object().shape({
   firstName: yup.string().required("required"),
@@ -80,20 +82,20 @@ const Form = () => {
     formData.append("picturePath", values.picture.name);
     setUserDetails(formData);
     console.log(formData, "jjjjjjjjj");
-    const savedUserResponse = await fetch("http://localhost:5000/send-otp", {
-      method: "POST",
-      body: formData,
-    });
-    const response = await savedUserResponse.json();
+    
+    const response = await sendOtp(formData)
+    
+    // const response = await savedUserResponse.json();
     // onSubmitProps.resetForm();
 
     if (response) {
       console.log(response, "otppppp");
       setRegButton(false);
-      if (response.message === "OTP sent") {
-        // setPageType("login");
+      if (response.data.message === "OTP sent") {
+     
+       
         setOtpField(true);
-        setOtp(response.response.otp);
+        setOtp(response.data.response.otp);
       } else {
         console.log("erororrr");
       }
@@ -102,18 +104,17 @@ const Form = () => {
 
   // LOGIN
   const login = async (values, onSubmitProps) => {
-    const loggedInResponse = await fetch("http://localhost:5000/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(values),
-    });
-    const loggedIn = await loggedInResponse.json();
+    console.log('hai');
+    const loggedIn = await userLogin(values,{headers: { "Content-Type": "application/json" }})
+    console.log(loggedIn,'jjjj');
     onSubmitProps.resetForm();
-    if (loggedIn) {
+    if (loggedIn.data) {
+      
+      toast("Welcome to EDNOX")
       dispatch(
         setLogin({
-          user: loggedIn.user,
-          token: loggedIn.token,
+          user: loggedIn.data.user,
+          token: loggedIn.data.token,
         })
       );
       navigate("/home");
@@ -275,9 +276,7 @@ const Form = () => {
                 <Box>
                   {regButton ? (
                     <Button
-                      onClick={() => {
-                        console.log("hello");
-                      }}
+                     
                       fullWidth
                       type="submit"
                       sx={{

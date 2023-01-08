@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import { getUserProfile } from "../../api/UserRequest";
 
 const ConversationWidget = ({ data, currentUserId, online }) => {
   const [userData, setUserData] = useState(null);
@@ -10,12 +11,9 @@ const ConversationWidget = ({ data, currentUserId, online }) => {
 
     const getUserData = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/users/${userId}`, {
-          method: "GET",
+        const { data } = await getUserProfile(userId, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        const data = await response.json();
-        console.log(data, "converstionnnn");
         setUserData(data);
       } catch (error) {
         console.log(error, "paraa");

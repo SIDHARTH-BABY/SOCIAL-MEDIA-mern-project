@@ -1,17 +1,18 @@
-import { IconButton, Menu, MenuItem } from "@mui/material";
+import { Alert, AlertTitle, Button, IconButton, Menu, MenuItem } from "@mui/material";
 import React, { useCallback } from "react";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { Button } from "antd";
+// import { Button } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import axios from "axios";
 import { useState } from "react";
 import { setPost, setPosts } from "../../state";
-
+import { UserPostDelete, UserPostReport } from "../../api/PostRequest";
 import { useReducer } from "react";
 const ITEM_HEIGHT = 48;
 
 const PostDelete = ({ setLoading, postUserId, postId }) => {
+  const [loaderDelete, setLoaderDelete] = useState(false);
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -24,12 +25,13 @@ const PostDelete = ({ setLoading, postUserId, postId }) => {
 
   const loggedInUserId = useSelector((state) => state.user._id);
 
+  //Delete Post
   const deletePost = async (postId) => {
-    console.log(postId, "noww post Id ");
-    let response = await axios.post("http://localhost:5000/posts/post-delete", {
-      postId,
-    });
+    console.log(postId, "herer post Id");
+    const response = await UserPostDelete(postId);
+
     if (response.data.success) {
+      setLoaderDelete(true);
       let updatedPosts = response.data.newposts;
       console.log(updatedPosts, "ithannu new posts");
       dispatch(setPost({ post: updatedPosts }));
@@ -37,14 +39,11 @@ const PostDelete = ({ setLoading, postUserId, postId }) => {
     }
   };
 
+  //Report Post
   const reportPost = async (postId) => {
     console.log(postId, "noww post Id ");
-    let response = await axios.patch(
-      `http://localhost:5000/posts/${postId}/report`,
-      {
-        loggedInUserId,
-      }
-    );
+    const response = await UserPostReport(postId, loggedInUserId);
+    console.log(response, "report");
     if (response.data.success) {
       let updatedPosts = response.data.newposts;
       console.log(updatedPosts, "ithannu new posts");
@@ -59,7 +58,7 @@ const PostDelete = ({ setLoading, postUserId, postId }) => {
         id="long-button"
         aria-controls={open ? "long-menu" : undefined}
         aria-expanded={open ? "true" : undefined}
-        aria-haspopup="true"
+       
         onClick={handleClick}
       >
         <MoreVertIcon />
@@ -75,32 +74,46 @@ const PostDelete = ({ setLoading, postUserId, postId }) => {
         PaperProps={{
           style: {
             maxHeight: ITEM_HEIGHT * 4.5,
-            width: "20ch",
+            width: "40ch",
           },
         }}
       >
         {postUserId === loggedInUserId ? (
-          <MenuItem onClick={handleClose}>
-            <Button
-              onClick={() => {
-                deletePost(postId);
-              }}
-            >
-              Delete
-            </Button>
-          </MenuItem>
+          <Alert
+            severity="error"
+            action={
+              <Button
+                size="medium"
+                onClick={() => {
+                  deletePost(postId);
+                }}
+              >
+                Delete
+              </Button>
+            }
+          >
+           Are You  Sure?
+          </Alert>
         ) : (
-          <MenuItem onClick={handleClose}>
-            <Button
-              onClick={() => {
-                reportPost(postId);
-              }}
-            >
-              Report?
-            </Button>
-          </MenuItem>
+          <Alert
+            severity="warning"
+            action={
+              <Button
+                color="error"
+                size="medium"
+                onClick={() => {
+                  reportPost(postId);
+                }}
+              >
+                Report
+              </Button>
+            }
+          >
+            Are You Sure?
+          </Alert>
         )}
       </Menu>
+      
     </div>
   );
 };

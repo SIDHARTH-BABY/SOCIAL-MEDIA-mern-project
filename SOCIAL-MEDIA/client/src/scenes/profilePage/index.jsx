@@ -9,21 +9,21 @@ import Navbar from "../navbar";
 import UserWidget from "../widgets/UserWidget";
 import MyPostWidget from "../widgets/MyPostWidget";
 import PostsWidget from "../widgets/PostsWidget";
+import { getUserProfile } from "../../api/UserRequest";
 const ProfilePage = () => {
   const [user, setUser] = useState(null);
   const location = useLocation();
   const token = useSelector((state) => state.token);
   const isNonMobileScreens = useMediaQuery("(min-width:1000px)");
 
+
+  //Get User
   const getUser = async () => {
-    const response = await fetch(
-      `http://localhost:5000/users/${location.state.userId}`,
-      {
-        method: "GET",
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
-    const data = await response.json();
+    const { data } = await getUserProfile(location.state.userId, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    console.log(data, "get user");
+
     setUser(data);
   };
 

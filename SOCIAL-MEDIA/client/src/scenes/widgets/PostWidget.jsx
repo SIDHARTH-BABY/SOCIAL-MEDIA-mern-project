@@ -26,6 +26,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setPost } from "../../state";
 import PostDelete from "../postDelete/PostDelete";
 import axios from "axios";
+import { CommentPost, LikePost } from "../../api/PostRequest";
 const ITEM_HEIGHT = 48;
 const PostWidget = ({
   postId,
@@ -56,26 +57,34 @@ const PostWidget = ({
   const [loading, setLoading] = useState(true);
 
   const patchLike = async () => {
-    const response = await fetch(`http://localhost:5000/posts/${postId}/like`, {
-      method: "PATCH",
+    const response = await LikePost(postId, loggedInUserId, {
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
       },
-      body: JSON.stringify({ userId: loggedInUserId }),
     });
-    const updatedPost = await response.json();
-    dispatch(setPost({ post: updatedPost }));
+    // const response = await fetch(`http://localhost:5000/posts/${postId}/like`, {
+    //   method: "PATCH",
+    //   headers: {
+    //     Authorization: `Bearer ${token}`,
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({ userId: loggedInUserId }),
+    // });
+    console.log(response.data, "[atch likeee");
+
+    if (response.data) {
+      const updatedPost = response.data;
+      dispatch(setPost({ post: updatedPost }));
+    }
   };
 
   const patchComment = async () => {
     const userName = user.firstName + " " + user.lastName;
-    const response = await axios.patch(`http://localhost:5000/posts/comment`, {
-      comment,
-      userName,
-      postId,
-    });
-    if (response) {
+
+    const response = await CommentPost(comment, userName, postId);
+    console.log(response.data, "hello");
+
+    if (response.data) {
       dispatch(setPost({ post: response.data.newCommentPost }));
     }
   };

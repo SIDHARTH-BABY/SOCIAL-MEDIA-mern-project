@@ -25,6 +25,7 @@ import WidgetWrapper from "../../components/WidgetWrapper";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPosts } from "../../state"
+import { PostData } from '../../api/PostRequest';
 
 const MyPostWidget = ({ picturePath }) => {
     const dispatch = useDispatch();
@@ -49,15 +50,17 @@ const MyPostWidget = ({ picturePath }) => {
             formData.append("picturePath", image.name);
         }
 
-        const response = await fetch(`http://localhost:5000/posts`, {
-            method: "POST",
-            headers: { Authorization: `Bearer ${token}` },
-            body: formData,
-        });
-        const posts = await response.json();
-        dispatch(setPosts({ posts }));
-        setImage(null);
-        setPost("");
+        //posting post
+        const response = await PostData(formData, { headers: { Authorization: `Bearer ${token}` }, })
+        console.log(response.data, 'user post chytha dataa');
+        if (response.data) {
+            const posts = response.data
+            dispatch(setPosts({ posts }));
+            setImage(null);
+            setPost("");
+
+        }
+
 
     }
 

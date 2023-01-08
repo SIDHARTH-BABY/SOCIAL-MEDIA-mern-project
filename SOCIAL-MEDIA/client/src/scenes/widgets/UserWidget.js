@@ -19,6 +19,8 @@ import Modal from '@mui/material/Modal';
 import { Button, Form, Input } from "antd";
 import axios from "axios";
 import { setLogin } from '../../state';
+import { createUserChat } from '../../api/ChatRequest';
+import { editUser, getUserProfile } from '../../api/UserRequest';
 
 const UserWidget = ({ userId, picturePath }) => {
 
@@ -47,13 +49,17 @@ const UserWidget = ({ userId, picturePath }) => {
     }
   }, [isCurrUser])
 
+
+  //Create Chat
   const createChat = async () => {
     const senderId = currUserId._id
     const receiverId = userId
 
-    const response = await axios.post("http://localhost:5000/chat/", { senderId, receiverId })
+    const response = await createUserChat({ senderId, receiverId })
 
-    if (response) {
+    console.log(response.data, 'packkk');
+
+    if (response.data) {
       navigate("../chat")
     }
 
@@ -76,7 +82,8 @@ const UserWidget = ({ userId, picturePath }) => {
     try {
       console.log('working');
 
-      const response = await axios.put(`http://localhost:5000/users/edit-user/${currUserId._id}`, values)
+      const response = await editUser(currUserId._id, values)
+
 
       if (response.data.success) {
         console.log(response.data.user, 'nokkate');
@@ -104,13 +111,13 @@ const UserWidget = ({ userId, picturePath }) => {
 
   const getUser = async () => {
 
-    const response = await fetch(`http://localhost:5000/users/${userId}`, {
-      method: "GET",
-      headers: { Authorization: `Bearer ${token}` },
-    })
-    const data = await response.json();
+    const response = await getUserProfile(userId, { headers: { Authorization: `Bearer ${token}` } })
+    console.log(response.data, 'its working');
 
-    setUser(data);
+    if (response.data) {
+      const data = response.data
+      setUser(data);
+    }
   }
 
   useEffect(() => {

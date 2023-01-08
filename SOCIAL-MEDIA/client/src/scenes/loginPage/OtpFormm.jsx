@@ -1,6 +1,7 @@
 import React from "react";
-import { Form, Input, Button } from "antd";
+import { Form, Input, Button, Alert } from "antd";
 import axios from "axios";
+import { userRegister } from "../../api/AuthRequest";
 
 const OtpFormm = ({
   userDetails,
@@ -10,17 +11,15 @@ const OtpFormm = ({
   setRegButton,
 }) => {
   const onFinish = async (value) => {
-   
     try {
       if (otp === value.otp) {
-        axios
-          .post("http://localhost:5000/auth/register", userDetails)
-          .then((response) => {
-           
-            setOtpField(false);
-            setRegButton(true);
-            setPageType("login");
-          });
+        const response = await userRegister(userDetails);
+        if (response.data) {
+          setOtpField(false);
+          setRegButton(true);
+          setPageType("login");
+         
+        }
       } else {
         console.log("otp incorrect");
       }
@@ -31,7 +30,10 @@ const OtpFormm = ({
   return (
     <div>
       <Form layout="vertical" onFinish={onFinish}>
-        <Form.Item    label={<label style={{ color: "white" }}>ENTER YOUR OTP</label>} name="otp">
+        <Form.Item
+          label={<label style={{ color: "white" }}>ENTER YOUR OTP</label>}
+          name="otp"
+        >
           <Input placeholder="Enter OTP " />
         </Form.Item>
 
