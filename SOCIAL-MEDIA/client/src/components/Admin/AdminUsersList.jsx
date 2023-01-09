@@ -4,6 +4,7 @@ import { Table, Divider, Tag, Button } from "antd";
 import axios from "axios";
 import { useEffect } from "react";
 import { useState } from "react";
+import { blockUserAdmin, unBlockUserAdmin, usersDataAdmin } from "../../api/AdminRequest";
 
 const AdminUsersList = () => {
   const [user, setUser] = useState([]);
@@ -13,10 +14,8 @@ const AdminUsersList = () => {
 
   const blockUser = async (userID) => {
     try {
-      const response = await axios.post(
-        "http://localhost:5000/admin/block-user",
-        { userID }
-      );
+      const response = await blockUserAdmin(userID)
+    
 
       if (response.data.success) {
         console.log("Blocked");
@@ -28,10 +27,8 @@ const AdminUsersList = () => {
 
   const unBlockUser = async (userID) => {
     try {
-      const response = await axios.post(
-        "http://localhost:5000/admin/unblock-user",
-        { userID }
-      );
+      const response = await unBlockUserAdmin(userID)
+    
 
       if (response.data.success) {
         console.log("unBlocked");
@@ -44,13 +41,12 @@ const AdminUsersList = () => {
   useEffect(() => {
     async function usersList() {
       try {
-        const userData = await axios.get(
-          "http://localhost:5000/admin/get-users"
-        );
+        const response = await usersDataAdmin() 
+      
 
-        if (userData.data.success) {
-          console.log(userData.data.formattedFriends, "first line admin");
-          setUser(userData.data.formattedFriends);
+        if (response.data.success) {
+          console.log(response.data.formattedFriends, "first line admin");
+          setUser(response.data.formattedFriends);
         }
       } catch (error) {
         console.log(error);

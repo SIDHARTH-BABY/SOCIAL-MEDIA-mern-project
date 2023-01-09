@@ -2,6 +2,11 @@ import React, { useEffect, useState } from "react";
 import { Table, Divider, Tag, Button } from "antd";
 import axios from "axios";
 import SinglePostView from "./SinglePostView";
+import {
+  postDeleteAdmin,
+  reportedPOstsAdmin,
+  viewPostAdmin,
+} from "../../api/AdminRequest";
 
 const AdminPostReportList = () => {
   const [post, setPost] = useState([]);
@@ -10,10 +15,8 @@ const AdminPostReportList = () => {
   const { Column } = Table;
   useEffect(() => {
     const getReportedPosts = async () => {
-      const response = await axios.get(
-        "http://localhost:5000/posts/reported-posts"
-      );
-
+      const response = await reportedPOstsAdmin();
+      console.log(response, "haiii");
       if (response.data.success) {
         setPost(response.data.formattedPosts);
       }
@@ -24,28 +27,24 @@ const AdminPostReportList = () => {
 
   const postDelete = async (postId) => {
     console.log(postId, "noww post Id ");
-    let response = await axios.post("http://localhost:5000/posts/post-delete", {
-      postId,
-    });
+
+    const response = await postDeleteAdmin(postId);
+    console.log(response, "haii");
     if (response.data.success) {
-      let updatedPosts = response.data.post;
+      console.log(response.data.newposts);
+      let updatedPosts = response.data.newposts;
       console.log(updatedPosts, "ithannu new posts");
-     
-      // dispatch(setPost({ post: updatedPosts }));
     }
   };
 
   const viewPost = async (postId) => {
-    const response = await axios.post("http://localhost:5000/admin/view-post", {
-      postId,
-    });
+    const response = await viewPostAdmin(postId);
+
     if (response.data.success) {
       let userPost = response.data.post;
       console.log(userPost, "ithannu new posts");
-      setLoading(false)
-      setSinglePost(userPost)
-
-      
+      setLoading(false);
+      setSinglePost(userPost);
     }
   };
 
@@ -94,7 +93,9 @@ const AdminPostReportList = () => {
             )}
           />
         </Table>
-      ) :  <SinglePostView singlePost={singlePost} setLoading={setLoading}/> }
+      ) : (
+        <SinglePostView singlePost={singlePost} setLoading={setLoading} />
+      )}
     </div>
   );
 };
