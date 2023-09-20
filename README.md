@@ -110,7 +110,6 @@ MongoDB
 Socket.io
 JSON Web Tokens (JWT)
 Material-UI
-arduino
-Copy code
 
-With this formatting, it should display correctly on Git and maintain the desired structure.
+
+
